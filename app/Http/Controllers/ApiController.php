@@ -62,7 +62,7 @@ class ApiController extends Controller
               ]);
         } else{
             return response()->json([
-                "status" => 404
+                "status" => 420
               ]);
         }
       }
