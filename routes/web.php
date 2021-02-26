@@ -19,6 +19,8 @@ Route::group(['middleware' => 'admin-auth'], function () {
     Route::get('user-list', 'ClientcreateController@userlist')->name('user-list');
     Route::get('user-details/{id}', 'ClientcreateController@userdetails')->name('user-details');
     Route::get('change-user-status', 'ClientcreateController@changeuserstatus')->name('change-user-status');
+    Route::get('details/{id}', 'ClientcreateController@details')->name('details');
+    Route::get('automatebet', 'ClientcreateController@automatebet')->name('automatebet');
     
 });
 Route::post('post-register', 'AuthController@postRegister')->name('post-register'); 

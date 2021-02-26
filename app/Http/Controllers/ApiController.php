@@ -27,9 +27,7 @@ class ApiController extends Controller
       }
   
       public function getClient($id) {
-       
-        // $id = \Crypt::decrypt($id);
-        // $clientid = \Crypt::decrypt($id); 
+
         if (Client::where('id', $id)->exists()) {
             $client = Client::where('id', $id)->get()->toJson(JSON_PRETTY_PRINT);
             return response($client, 200);
@@ -54,8 +52,7 @@ class ApiController extends Controller
         $passwordCheck = sha1($password);
         $token = $request->token;
         $flag = Client::where('name', $name)->where('password', $passwordCheck)->where('token', $token)->first();
-        // var_dump($flag);
-        // die();
+
         if($flag){
             return response()->json([
                 "status" => 200

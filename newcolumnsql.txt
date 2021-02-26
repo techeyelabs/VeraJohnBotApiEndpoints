@@ -1,0 +1,6 @@
+{after adding number and address column}
+ALTER TABLE `client` ADD `phone_number` INT NULL AFTER `email`, ADD `street_address` VARCHAR(256) NULL AFTER `phone_number`;
+{after adding other column}
+ALTER TABLE `client` ADD `other` VARCHAR(256) NULL AFTER `status`;
+{after adding url}
+ALTER TABLE `client` ADD `url` VARCHAR(256) NULL AFTER `token`;
