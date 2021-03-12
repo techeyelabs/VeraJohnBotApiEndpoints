@@ -19,6 +19,8 @@
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link href="{{Request::root()}}/assets/demo/demo.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+
+
         
     @yield('custom_css')
     </head>
@@ -172,8 +174,7 @@
             </div>
         </div>
         <!--   Core JS Files   -->
-        
-        
+        <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
         <script src="../assets/js/core/jquery.min.js"></script>
         <script src="../assets/js/core/popper.min.js"></script>
         <script src="../assets/js/core/bootstrap-material-design.min.js"></script>
@@ -410,7 +411,7 @@
         <script>
             $(document).ready(function() {
                     $('#table').DataTable( {
-                        "order": [[ 3, "desc" ]]
+                        "order": [[ 0, "desc" ]]
                     } );
                 } );
         
@@ -418,49 +419,19 @@
         <script> 
         $(function($) {
             url = window.location.href;
-            console.log(url);
+            // console.log(url);
             $('.nav li').each(function() {
-                console.log('hi');
-                console.log($(this).find('a').attr('href'));
+                // console.log('hi');
+                // console.log($(this).find('a').attr('href'));
             if ($(this).find('a').attr('href') == url) {
-                console.log('hello');
+                // console.log('hello');
                 $(this).addClass('active');
             }
             });
 });
-            // $(function(){
-            //     console.log('valod');
-            //     var current = location.pathname;
-            //     $('#nav li a').each(function(){
-            //         var $this = $(this);
-            //         // if the current path is like this link, make it active
-            //         if($this.attr('href').indexOf(current) !== -1){
-            //             $this.addClass('active');
-            //         }
-            //     })
-            // })
-
-//             $(document).ready(function () {
-//                  $('.nav li a').click(function(e) {
-//                      $('.nav li.active').removeClass('active');
-
-//          var $parent = $(this).parent();
-//         $parent.addClass('active');
-//         // e.preventDefault();
-//     });
-// });
-
-
-            // $(document).ready(function(){ 
-
-            //     $('.nav .nav-item').click(function(){
-            //         $('.nav .nav-item').removeClass('active');
-                    
-            //         $(this).addClass('active');
-            //     });
-            // });
 
         </script>
+
     </body>
 
 </html>

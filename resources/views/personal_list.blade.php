@@ -18,11 +18,10 @@
                     <div class="col-md-8" style="margin: auto;">
                         <div class="row">
                             <div class="col-md-6">
-                                <a href="{{url('automatebet')}}" class="btn btn-primary btn-round" style="width: 100%;"><b>グループ設定 </b></a>
+                                <a href="javascript:;" class="btn btn-primary btn-round" style="width: 100%"; onclick="goBack()"><b>グループ設定 </b></a>
                             </div>
                             <div class="col-md-6">
-                                {{-- <a href="{{url('personal_settings')}}" class="btn btn-primary btn-round" style="width: 100%";>個人設定</a> --}}
-                                <a href="{{url('nogroup_users')}}" class="btn btn-primary btn-round" style="width: 100%";>個人設定</a>
+                                <a href="{{url('personal_settings')}}" class="btn btn-primary btn-round" style="width: 100%";>個人設定</a>
                             </div>
                         </div>
                     </div>
@@ -46,11 +45,11 @@
                         <th> 自動設定 </th>
                     </thead>
                     <tbody>
-                        @foreach ($data as $dt )
+                        @foreach ($client as $dt )
                             <tr>
                                 <td>{{ $dt->created_at }} </td>
-                                <td style="text-align: left;"><a href="{{url('personal_list')}}/{{\Crypt::encrypt($dt->id)}}">{{ $dt->group_name }}</a></td>
-                                <td><a href="{{url('edit_group')}}/{{\Crypt::encrypt($dt->id)}}">編集</a> / <a href="{{url('delete_group')}}/{{\Crypt::encrypt($dt->id)}}"> 削除</a></td>
+                                <td style="text-align: left;">{{ $dt->name }}/ {{ $dt->email }}</td>
+                                <td>編集 / 削除</td>
                             </tr>
                         @endforeach
                         {{-- <td>20201117  </td>

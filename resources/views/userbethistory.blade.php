@@ -3,12 +3,10 @@
 <a class="navbar-brand" href="javascript:;"></a>
 @endsection
 
-
 @section('content')
     <div class="content">
         <div class="container-fluid">
         <div class="row">
-
             <div class="col-md-12">
                 <div class="card card-profile">
                     <div class="card-body">
@@ -37,61 +35,47 @@
                         </div>
                         <div class="col-md-4">
                             <a href="{{url('bethistory/'.Crypt::encrypt($c->id))}}" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;">BET 履歴</a>
-                            {{-- <a href="javascript:;" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;" onclick="myFunction()">BET 履歴</a> --}}
+                            {{-- <a href="javascript:;" class="btn btn-primary btn-round col-md-3" onclick="myFunction()">BET 履歴</a> --}}
                         </div>
                     </div>
-                    
-                    {{-- <div class="table-responsive col-md-8 pb-3" id="bethistory" style="margin: auto; display: none;">
-                        <h3 style="text-align: center;">Bet History</h3>
+                
+                    <h3 style="text-align: center;">Bet History</h3>
+                    <div class="col-md-8 pb-3" style="margin: auto;">
                         <table class="table" id="table">
                             <thead class=" text-primary">
-                                <tr>
-                                    <th> 日付  </th>
-                                    <th> 金額  </th>
-                                </tr>
+                                <th> 日付   </th>
+                                <th> BET 金額   </th>
+                                <th> 結果   </th>
+                                <th> テーブル   </th>
                             </thead>
                             <tbody>
                                 @foreach ($details as $d  )
                                     <tr>
                                         <td>{{ $d->created_at }} </td>
                                         <td>{{ $d->aftermath }}</td>
+                                        @if ( $d->result ==1)
+                                            <td> Win </td>
+                                        @else
+                                            <td> Lost </td>
+                                        @endif
+                                        <td>{{ $d->table }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4"></div>
         </div>
         </div>
     </div>
- {{-- <script>
-        function myFunction() {
-            var x = document.getElementById("bethistory");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } 
-        }
-    </script> --}}
-   {{--   <script>
-        function myFunction1() {
-            var x = document.getElementById("deposits");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
-    <script>
-        function myFunction2() {
-            var x = document.getElementById("withdrawls");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script> --}}
 @endsection
+{{-- <script>
+    $(document).ready(function() {
+            $('#table1').DataTable( {
+                "order": [[ 3, "desc" ]]
+            } );
+        } );
+
+</script> --}}
+
