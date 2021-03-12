@@ -18,5 +18,21 @@ class Client extends Model
     {
         return $this->hasMany('App\Betstartlog', 'userid');
     }
+    public function Bethistory()
+    {
+        return $this->hasMany('App\Bethistory', 'user_id');
+    }
+    public function account()
+    {
+        return $this->hasMany('App\Account', 'user_id');
+    }
+    public function groups()
+    {
+        return $this->hasMany('App\Groups', 'users');
+    }
+    public function individual_list()
+    {
+        return $this->hasOne('App\Individual_list', 'user_id');
+    }
 
 }

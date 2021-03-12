@@ -28,5 +28,9 @@ Route::delete('client/{id}','ApiController@deleteClient');
 
 // Third party Api's
 Route::get('userauthentication', 'ApiController@userauthentication');
-Route::get('betstartlog', 'ApiController@betstartlog');
-Route::get('betendlog', 'ApiController@betendlog');
+Route::get('betstartlog', 'BetController@betstartlog');
+Route::get('betendlog', 'BetController@betendlog');
+Route::get('bethistory', 'BetController@bethistory');
+Route::get('account', 'ApiController@account');
+// Route::get('details/{id}', 'ClientcreateController@details');
+Route::get('beteligibility', 'ApiController@beteligibility');
