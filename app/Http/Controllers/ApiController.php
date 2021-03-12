@@ -53,6 +53,9 @@ class ApiController extends Controller
         $password = $request->password;
         $passwordCheck = sha1($password);
         $token = $request->token;
+         return response()->json([
+                "status" => 404
+              ]);
         $flag = Client::where('name', $name)->where('password', $passwordCheck)->where('token', $token)->first();
         // var_dump($flag);
         // die();
@@ -62,7 +65,7 @@ class ApiController extends Controller
               ]);
         } else{
             return response()->json([
-                "status" => 420
+                "status" => 404
               ]);
         }
       }
