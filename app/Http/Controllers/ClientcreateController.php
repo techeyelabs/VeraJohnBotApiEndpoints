@@ -323,4 +323,9 @@ class ClientcreateController extends Controller
         // exit;   
         // return view('edit_group')->with('client', $client)->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('user', $user)->with('name', $name);
     }
+    public function download()
+    {
+        $pathToFile = storage_path('app\files\main');
+        return response()->download($pathToFile);
+    }
 }

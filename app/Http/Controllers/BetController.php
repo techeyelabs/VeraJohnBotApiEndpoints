@@ -35,8 +35,8 @@ class BetController extends Controller
             $data->table = $table;
             $data->save();
             return response()->json([
-                "message" => "hi",
-                "client" => $flag,
+                // "message" => "hi",
+                // "client" => $flag,
                 "status" => 200
               ]);
         } else{
