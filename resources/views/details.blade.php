@@ -22,7 +22,7 @@
 
                         <h4 style="margin-top: 3%">クライアントアプリダウンロード用リンク</h4>
                         @foreach ($client as $c  )
-                            <h4>{{ $c->url }}</h4>
+                            <h4><a href="{{ route('filedownload') }}">{{ $c->url }}</a></h4>
                         @endforeach
                         <a href="javascript:;" class="btn btn-primary btn-round" onclick="goBack()">メールに送信 </a>
                     </div>
