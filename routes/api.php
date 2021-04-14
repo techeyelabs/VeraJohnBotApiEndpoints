@@ -27,10 +27,17 @@ Route::delete('client/{id}','ApiController@deleteClient');
 
 
 // Third party Api's
-Route::get('userauthentication', 'ApiController@userauthentication');
+Route::get('userauthentication', 'ApiController@userauthentication');  // Authenticate user into web system
+Route::get('verajohnIdPass-Registration', 'ApiController@verajohnIdPassRegistration');  // Put verajohn id pass into web system
 Route::get('betstartlog', 'BetController@betstartlog');
 Route::get('betendlog', 'BetController@betendlog');
-Route::get('bethistory', 'BetController@bethistory');
+
+Route::get('bethistory', 'BetController@bethistory');  // get last bet data. such as how much was placed as bet
+Route::get('betwinning', 'BetController@bethistory');  // get last winning data
+
 Route::get('account', 'ApiController@account');
-// Route::get('details/{id}', 'ClientcreateController@details');
 Route::get('beteligibility', 'ApiController@beteligibility');
+
+Route::get('devicevalidation', 'ApiController@devicevalidation');  // check if the device is known
+Route::get('accountIdPassValidation', 'ApiController@devicevalidation');  // check if the device is known
+Route::get('deviceReg', 'ApiController@deviceReg');  // Register the device
