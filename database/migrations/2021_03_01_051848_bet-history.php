@@ -19,6 +19,7 @@ class BetHistory extends Migration
             $table->string('target')->default('P');
             $table->boolean('result')->default('1');
             $table->bigInteger('aftermath')->default('0');
+            $table->bigInteger('delta')->default('0');
             $table->string('table')->default('Bacarrat');
             $table->timestamps();
         });

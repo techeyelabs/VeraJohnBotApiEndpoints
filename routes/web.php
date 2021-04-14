@@ -33,7 +33,7 @@ Route::group(['middleware' => 'admin-auth'], function () {
     Route::get('edit_group/{id}', 'ClientcreateController@edit_group')->name('edit_group');
     Route::post('edit_group_action/{id}', 'ClientcreateController@edit_group_action')->name('edit_group_action');
     Route::get('delete_group/{id}', 'ClientcreateController@delete_group')->name('delete_group');
-    Route::get('downloadinstallertest', 'ClientcreateController@download')->name('filedownload');
+    Route::get('installerdownload', 'ClientcreateController@download')->name('filedownload');
     
 });
 Route::post('post-register', 'AuthController@postRegister')->name('post-register'); 

@@ -17,32 +17,57 @@ use DataTables;
 class BetController extends Controller
 {
     public function bethistory (Request $request) {
-        $name = $request->name;
+        $name = $request->id;
         $token = $request->token;
         $target = $request->target;
         $result = $request->result;
         $aftermath = $request->aftermath;
+        $delta = $request->delta;
         $table = $request->table;
-        // $starttime = $request->starttime;
-        $flag = Client::where('name', $name)->where('token', $token)->first();
+        $flag = Bethistory::where('userid', $name)->where('token', $token)->first();
         if($flag){
             $data = new Bethistory();
             $data->user_id = $flag->id;
-            // $data->starttime = $starttime;
+            $data->delta = $delta;
             $data->target = $target;
             $data->result = $result;
             $data->aftermath = $aftermath;
             $data->table = $table;
             $data->save();
             return response()->json([
-                // "message" => "hi",
-                // "client" => $flag,
                 "status" => 200
               ]);
         } else{
             return response()->json([
                 "status" => 404
               ]);
+        }
+    }
+
+    public function winninghistory (Request $request) {
+        $name = $request->name;
+        $target = $request->target;
+        $result = $request->result;
+        $aftermath = $request->aftermath;
+        $delta = $request->delta;
+        $table = $request->table;
+        $flag = Client::where('name', $name)->where('token', $token)->first();
+        if($flag){
+            $data = new Bethistory();
+            $data->user_id = $flag->id;
+            $data->delta = $delta;
+            $data->target = $target;
+            $data->result = $result;
+            $data->aftermath = $aftermath;
+            $data->table = $table;
+            $data->save();
+            return response()->json([
+                "status" => 200
+            ]);
+        } else{
+            return response()->json([
+                "status" => 404
+            ]);
         }
     }
     public function betstartlog (Request $request) {
@@ -85,7 +110,7 @@ class BetController extends Controller
               ]);
         }
     }
-    
+
     public function userbethistory($id){
         $id = Crypt::decrypt($id);
         $details = Bethistory::where('user_id', $id)->get();
@@ -93,7 +118,7 @@ class BetController extends Controller
         // echo '<pre>';
         // print_r($client);
 
-        return view('userbethistory')->with('details', $details)->with('client', $client); 
+        return view('userbethistory')->with('details', $details)->with('client', $client);
     }
 
     public function withdrawhistory($id){
@@ -103,9 +128,9 @@ class BetController extends Controller
         // echo '<pre>';
         // print_r($client);
 
-        return view('withdrawhistory')->with('withdraw', $withdraw)->with('client', $client); 
+        return view('withdrawhistory')->with('withdraw', $withdraw)->with('client', $client);
     }
-    
+
     public function deposithistory($id){
         $id = Crypt::decrypt($id);
         $client = Client::where('id', $id)->get();
@@ -113,6 +138,6 @@ class BetController extends Controller
         // echo '<pre>';
         // print_r($client);
 
-        return view('deposithistory')->with('deposit', $deposit)->with('client', $client); 
+        return view('deposithistory')->with('deposit', $deposit)->with('client', $client);
     }
 }
