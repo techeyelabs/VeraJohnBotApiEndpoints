@@ -16,15 +16,15 @@ class ClientcreateController extends Controller
 {
     public function createuser()
     {
-            return view('createuser');        
+            return view('createuser');
     }
     public function automatebet()
     {
         $data = Groups::all();
-            return view('automatebet')->with('data', $data);        
+            return view('automatebet')->with('data', $data);
     }
     public function details($id)
-    { 
+    {
         $id = \Crypt::decrypt($id);
         $client = Client::where('id', $id)->get();
         // echo '<pre>';
@@ -38,15 +38,15 @@ class ClientcreateController extends Controller
         // print_r($deposit);
         // exit;
 
-        // return view('dummy')->with('details', $details); 
-       
-            return view('details')->with('client', $client)->with('details', $details);        
+        // return view('dummy')->with('details', $details);
+
+            return view('details')->with('client', $client)->with('details', $details);
     }
     public function userlist()
     {
 
         $client = Client::all();
-        return view('userlist', ['client'=>$client]);           
+        return view('userlist', ['client'=>$client]);
     }
     public function userdetails($id)
     {
@@ -57,7 +57,7 @@ class ClientcreateController extends Controller
             if($id){
                 return $client;
             }
-        }           
+        }
     }
     public function createuseraction(Request $request)
     {
@@ -67,7 +67,7 @@ class ClientcreateController extends Controller
             'email' => 'required|email|unique:client',
             'password' => 'required|min:6|regex:/^(?=\P{Ll}*\p{Ll})(?=\P{Lu}*\p{Lu})(?=\P{N}*\p{N})(?=[\p{L}\p{N}]*[^\p{L}\p{N}])[\s\S]{6,}$/',
         ]);
-        
+
             $data->name = $request['name'];
             $data->email = $request['email'];
             $data->password = sha1($request['password']);
@@ -75,24 +75,24 @@ class ClientcreateController extends Controller
             $data->street_address = $request['address'];
             $data->other = $request['other'];
             $data->token = Str::random(30);
-            $data->url = "http://".$_SERVER['HTTP_HOST']."/bot-$data->token";
+            $data->url = "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/bot-$data->token";
 
             $data->save();
             return redirect()->route('user-list');
     }
     public function changeuserstatus(Request $request)
-    {       
+    {
         $Client = Client::find($request->id);
         $clientStatus = Client::where('id', $request->id)->first();
         if($clientStatus->status == 1){
         $data['client'] = Client::where('id', $request->id)->where('status', 1)->update(['status'=>0 ]);
         }else if($clientStatus->status == 0){
             $data['client'] = Client::where('id', $request->id)->where('status', 0)->update(['status'=>1 ]);
-           
+
         }
         return ;
-            
-           
+
+
     }
 
     public function creategroup()
@@ -102,7 +102,7 @@ class ClientcreateController extends Controller
         // $min = [00, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
         $min = [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
 
-        return view('creategroup')->with('client', $client)->with('hour', $hour)->with('min', $min);        
+        return view('creategroup')->with('client', $client)->with('hour', $hour)->with('min', $min);
     }
 
     public function creategroupaction(Request $request)
@@ -113,7 +113,7 @@ class ClientcreateController extends Controller
             'groupname' => 'required | max:255',
             'days' => 'required_without_all',
         ]);
-        
+
             $arraytostring = implode(',', $request['days']);
             // $namearray = implode(',', $request['username']);
 
@@ -127,10 +127,10 @@ class ClientcreateController extends Controller
             $data->days = $arraytostring;
             $data->winning_double = $request['winningamount'];
             $data->negative_double = $request['negativeamount'];
-            
+
 
             $data->save();
-            
+
             //$test = [3, 4];
             $test = $request['username'];
 
@@ -143,7 +143,7 @@ class ClientcreateController extends Controller
                         ]);
                         }
         }
-        
+
         return redirect()->route('automatebet');
     }
 
@@ -156,12 +156,12 @@ class ClientcreateController extends Controller
         // $min = [00, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
         $min = [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
 
-        return view('personal_settings')->with('client', $client)->with('hour', $hour)->with('min', $min); 
-        // return view('personal_settings')->with('client', $client);           
+        return view('personal_settings')->with('client', $client)->with('hour', $hour)->with('min', $min);
+        // return view('personal_settings')->with('client', $client);
     }
 
     public function personal_list($id)
-    { 
+    {
         $id = \Crypt::decrypt($id);
         $client = Client::where('group_id', $id)->get();
         // echo '<pre>';
@@ -175,9 +175,9 @@ class ClientcreateController extends Controller
         // print_r($deposit);
         // exit;
 
-        // return view('dummy')->with('details', $details); 
-       
-            return view('personal_list')->with('client', $client);        
+        // return view('dummy')->with('details', $details);
+
+            return view('personal_list')->with('client', $client);
     }
 
     public function nogroup_users()
@@ -185,7 +185,7 @@ class ClientcreateController extends Controller
 
         $client = Client::where('group_id' , NULL)->orWhere('group_id', '=', 0)->get();
         // $client = Individual_list::all();
-        return view('nogroup_users')->with('client', $client);           
+        return view('nogroup_users')->with('client', $client);
     }
 
     public function personal_settings_action(Request $request)
@@ -197,7 +197,7 @@ class ClientcreateController extends Controller
             'days' => 'required_without_all',
             'username' => 'required_without_all',
         ]);
-        
+
             $arraytostring = implode(',', $request['days']);
             $namearray = implode(',', $request['username']);
 
@@ -211,10 +211,10 @@ class ClientcreateController extends Controller
             $data->days = $arraytostring;
             $data->winning_double = $request['winningamount'];
             $data->negative_double = $request['negativeamount'];
-            
+
 
             $data->save();
-            
+
             //$test = [3, 4];
             // $test = $request['username'];
 
@@ -226,8 +226,8 @@ class ClientcreateController extends Controller
             //                 'group_id' => $data->id,
             //             ]);
             //             }
-        
-           
+
+
         // return view('nogroup_users');
         return redirect()->route('personal_settings');
     }
@@ -244,10 +244,10 @@ class ClientcreateController extends Controller
 
         $daysarray = explode(',', $client[0]->days);
         // $client = Individual_list::all();
-        // return view('nogroup_users')->with('client', $client);        
+        // return view('nogroup_users')->with('client', $client);
         // echo '<pre>';
         // print_r($daysarray);
-        // exit;   
+        // exit;
         return view('edit_group')->with('client', $client)->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('user', $user)->with('name', $name);
     }
 
@@ -260,7 +260,7 @@ class ClientcreateController extends Controller
             'groupname' => 'required | max:255',
             'days' => 'required_without_all',
         ]);
-        
+
             $arraytostring = implode(',', $request['days']);
             // $namearray = implode(',', $request['username']);
 
@@ -274,7 +274,7 @@ class ClientcreateController extends Controller
             $days = $arraytostring;
             $winning_double = $request['winningamount'];
             $negative_double = $request['negativeamount'];
-            
+
             groups::where('id', '=', $id)
                 ->update([
                     'group_name' => $group_name,
@@ -286,8 +286,8 @@ class ClientcreateController extends Controller
                     'winning_double' => $winning_double,
                     'negative_double' => $negative_double,
                 ]);
-            
-            
+
+
             //$test = [3, 4];
             $test = $request['username'];
 
@@ -300,7 +300,7 @@ class ClientcreateController extends Controller
                         ]);
                         }
         }
-        
+
         return redirect()->route('automatebet');
     }
 
@@ -317,10 +317,10 @@ class ClientcreateController extends Controller
 
         // $daysarray = explode(',', $client[0]->days);
         // $client = Individual_list::all();
-        // return view('nogroup_users')->with('client', $client);        
+        // return view('nogroup_users')->with('client', $client);
         // echo '<pre>';
         // print_r($daysarray);
-        // exit;   
+        // exit;
         // return view('edit_group')->with('client', $client)->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('user', $user)->with('name', $name);
     }
     public function download()

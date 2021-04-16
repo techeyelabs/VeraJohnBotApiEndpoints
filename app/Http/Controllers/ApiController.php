@@ -77,7 +77,7 @@ class ApiController extends Controller
             return response()->json([
                 "message" => "Successfully authenticated",
                 "verajohn_id" => $flag->verajohnId,
-                "verajohn_pass" => $flag->verajohnId,
+                "verajohn_pass" => $flag->verajohnPassword,
                 "status" => 200
             ]);
         } else{
@@ -87,33 +87,6 @@ class ApiController extends Controller
         }
       }
 
-      public function account (Request $request) {
-            $name = $request->name;
-            $token = $request->token;
-            $amount = $request->amount;
-            $date = $request->date;
-            $type = $request->type;
-            // $starttime = $request->starttime;
-            $flag = Client::where('name', $name)->where('token', $token)->first();
-            if($flag){
-                $data = new Account();
-                $data->user_id = $flag->id;
-                // $data->starttime = $starttime;
-                $data->amount = $amount;
-                $data->date = $date;
-                $data->transaction_type = $type;
-                $data->save();
-                return response()->json([
-                    // "message" => "hi",
-                    // "client" => $flag,
-                    "status" => 200
-                  ]);
-            } else{
-                return response()->json([
-                    "status" => 404
-                  ]);
-            }
-        }
 
     public function account(Request $request) {
         $name = $request->name;
