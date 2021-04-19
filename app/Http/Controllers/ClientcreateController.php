@@ -79,7 +79,14 @@ class ClientcreateController extends Controller
 
         $data->save();
 
-        return redirect()->route('downloadLink');
+        $params = [
+            'sender_name' => 'Casino Bot',
+            'receiver_name' => $request['name'],
+            'usermail' => $request['email'],
+            'downloadlink' => "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/bot-$data->token",
+        ];
+
+        return redirect()->route('downloadLink', $params);
     }
     public function changeuserstatus(Request $request)
     {
