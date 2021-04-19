@@ -114,7 +114,7 @@ class ApiController extends Controller
 
     public function beteligibility(Request $request) {
         $id = $request->id;
-        $flag = Client::where('id', $id)->first();
+        $flag = Client::where('name', $id)->first();
         if ($flag->uuid != $request->uuid && $flag->mac != $request->mac){
             return response()->json([
                 "message" => "Device is not verified",
