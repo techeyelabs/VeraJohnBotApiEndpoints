@@ -221,19 +221,25 @@ class ApiController extends Controller
         $passwordCheck = sha1($request->userPass);
         $verajohnId = $request->verajohnuserid;
         $verajohnPass = $request->verajohnuserpass;
-
-        $isexist = Client::where('name', $userid)->where('password', $passwordCheck)->first();
-        if ($isexist){
-            $isexist->verajohnId = $verajohnId;
-            $isexist->verajohnPassword = $verajohnPass;
-            $isexist->save();
-            return response()->json([
-                "status" => 200
-            ]);
-        } else {
+        $isexistvera = Client::where('verajohnId', $verajohnId)->where('verajohnPassword', $verajohnPass)->first();
+        if ($isexistvera){
             return response()->json([
                 "status" => 404
             ]);
+        } else {
+            $isexist = Client::where('name', $userid)->where('password', $passwordCheck)->first();
+            if ($isexist){
+                $isexist->verajohnId = $verajohnId;
+                $isexist->verajohnPassword = $verajohnPass;
+                $isexist->save();
+                return response()->json([
+                    "status" => 200
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 404
+                ]);
+            }
         }
     }
 }
