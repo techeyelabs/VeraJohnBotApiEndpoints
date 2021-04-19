@@ -333,7 +333,7 @@ class ClientcreateController extends Controller
     }
     public function download()
     {
-        $pathToFile = storage_path('app\files\main.exe');
+        $pathToFile = storage_path('app/files/main.exe');
         return response()->download($pathToFile);
     }
 }
