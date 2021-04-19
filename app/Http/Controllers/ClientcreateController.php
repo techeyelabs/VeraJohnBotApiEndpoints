@@ -65,7 +65,7 @@ class ClientcreateController extends Controller
         request()->validate([
             'name' => 'required | unique:client',
             'email' => 'required|email|unique:client',
-            'password' => 'required|min:6|regex:/^(?=\P{Ll}*\p{Ll})(?=\P{Lu}*\p{Lu})(?=\P{N}*\p{N})(?=[\p{L}\p{N}]*[^\p{L}\p{N}])[\s\S]{6,}$/',
+            'password' => 'required|min:6',
         ]);
 
             $data->name = $request['name'];
