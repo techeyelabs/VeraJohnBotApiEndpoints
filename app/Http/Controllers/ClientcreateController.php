@@ -21,7 +21,7 @@ class ClientcreateController extends Controller
     public function automatebet()
     {
         $data = Groups::all();
-            return view('automatebet')->with('data', $data);
+        return view('automatebet')->with('data', $data);
     }
     public function details($id)
     {
@@ -105,7 +105,7 @@ class ClientcreateController extends Controller
 
     public function creategroup()
     {
-        $client = Client::all();
+        $client = Client::where('group_id', null)->get();
         $hour = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         // $min = [00, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
         $min = [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
@@ -295,18 +295,18 @@ class ClientcreateController extends Controller
                     'negative_double' => $negative_double,
                 ]);
 
-
-            //$test = [3, 4];
             $test = $request['username'];
-
+            client::where('group_id','=', $id)
+                ->update([
+                    'group_id' => null,
+                ]);
             if($test>0){
                 foreach ($test as $user) {
-                // client::whereIn('id', $test)
                     client::where('id','=', $user)
                         ->update([
                             'group_id' => $id,
                         ]);
-                        }
+                }
         }
 
         return redirect()->route('automatebet');
