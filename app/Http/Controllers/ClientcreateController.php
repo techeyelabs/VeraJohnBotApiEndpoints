@@ -83,7 +83,7 @@ class ClientcreateController extends Controller
             'sender_name' => 'Casino Bot',
             'receiver_name' => $request['name'],
             'usermail' => $request['email'],
-            'downloadlink' => "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/bot-$data->token",
+            'downloadlink' => "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-$data->token",
         ];
 
         return redirect()->route('downloadLink', $params);
@@ -331,9 +331,17 @@ class ClientcreateController extends Controller
         // exit;
         // return view('edit_group')->with('client', $client)->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('user', $user)->with('name', $name);
     }
-    public function download()
+    public function download(Request $request)
     {
-        $pathToFile = storage_path('app/files/main.exe');
-        return response()->download($pathToFile);
+        $identity = $request->id;
+        $all = explode('-', $identity);
+        $name = Client::where('token' , $all[1])->first();
+        if ($name){
+            $pathToFile = storage_path('app/files/main.exe');
+            return response()->download($pathToFile);
+        } else {
+            echo "Invalid URL, contact concerned authority";
+        }
+
     }
 }

@@ -16,13 +16,13 @@
                         @foreach ($client as $c  )
                             <h4><b>{{ $c->name }}</b></h4>
                             <h4>{{ $c->email }}</h4>
-                            
+
                         @endforeach
                         <a href="javascript:;" class="btn btn-primary btn-round" onclick="goBack()">一時停止する</a><br /><br />
 
                         <h4 style="margin-top: 3%">クライアントアプリダウンロード用リンク</h4>
                         @foreach ($client as $c  )
-                            <h4><a href="{{ route('filedownload') }}">{{ $c->url }}</a></h4>
+                            <h4><a href="{{ route('filedownload') }}">http://{{$_SERVER['HTTP_HOST']}}/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-{{$c->token}}</a></h4>
                         @endforeach
                         <a href="javascript:;" class="btn btn-primary btn-round" onclick="goBack()">メールに送信 </a>
                     </div>
@@ -40,7 +40,7 @@
                             {{-- <a href="javascript:;" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;" onclick="myFunction()">BET 履歴</a> --}}
                         </div>
                     </div>
-                    
+
                     {{-- <div class="table-responsive col-md-8 pb-3" id="bethistory" style="margin: auto; display: none;">
                         <h3 style="text-align: center;">Bet History</h3>
                         <table class="table" id="table">
@@ -71,7 +71,7 @@
             var x = document.getElementById("bethistory");
             if (x.style.display === "none") {
                 x.style.display = "block";
-            } 
+            }
         }
     </script> --}}
    {{--   <script>
