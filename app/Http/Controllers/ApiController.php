@@ -139,29 +139,47 @@ class ApiController extends Controller
             $m = date('i');
             $dt = date('G:i');
 
-            if($h >= $start_autobet_hour || $h <= $stop_autobet_hour){
-                if($m >= $start_autobet_min && $m <= $stop_autobet_min){
+            if($h >= $start_autobet_hour && $h <= $stop_autobet_hour){
+                if ($h == $stop_autobet_hour) {
+                    if ($m <= $stop_autobet_min) {
+                        return response()->json([
+                            "time" => $dt,
+                            "start_autobet" => $start_autobet,
+                            "stop_autobet" => $stop_autobet,
+                            "status" => 200
+                        ]);
+                    } else {
+                        return response()->json([
+                            "time" => $dt,
+                            "start_autobet" => $start_autobet,
+                            "stop_autobet" => $stop_autobet,
+                            "status" => 404
+                        ]);
+                    }
+                } else if($h == $start_autobet_hour){
+                    if ($m <= $start_autobet_min) {
+                        return response()->json([
+                            "time" => $dt,
+                            "start_autobet" => $start_autobet,
+                            "stop_autobet" => $stop_autobet,
+                            "status" => 404
+                        ]);
+                    } else {
+                        return response()->json([
+                            "time" => $dt,
+                            "start_autobet" => $start_autobet,
+                            "stop_autobet" => $stop_autobet,
+                            "status" => 200
+                        ]);
+                    }
+                } else {
                     return response()->json([
                         "time" => $dt,
                         "start_autobet" => $start_autobet,
                         "stop_autobet" => $stop_autobet,
                         "status" => 200
                     ]);
-                } else {
-                    return response()->json([
-                        "time" => $dt,
-                        "start_autobet" => $start_autobet,
-                        "stop_autobet" => $stop_autobet,
-                        "status" => 404
-                    ]);
                 }
-            } else if($h > $start_autobet_hour && $h < $stop_autobet_hour){
-                return response()->json([
-                    "time" => $dt,
-                    "start_autobet" => $start_autobet,
-                    "stop_autobet" => $stop_autobet,
-                    "status" => 200
-                ]);
             } else {
                 return response()->json([
                     "time" => $dt,
