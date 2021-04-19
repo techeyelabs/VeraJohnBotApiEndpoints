@@ -113,10 +113,8 @@ class BetController extends Controller
 
     public function userbethistory($id){
         $id = Crypt::decrypt($id);
-        $details = Bethistory::where('user_id', $id)->get();
+        $details = Bethistory::where('user_id', $id)->orderBy('id', 'DESC')->get();
         $client = Client::where('id', $id)->get();
-        // echo '<pre>';
-        // print_r($client);
 
         return view('userbethistory')->with('details', $details)->with('client', $client);
     }

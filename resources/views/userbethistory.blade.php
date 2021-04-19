@@ -14,7 +14,7 @@
                         @foreach ($client as $c  )
                             <h4><b>{{ $c->name }}</b></h4>
                             <h4>{{ $c->email }}</h4>
-                            
+
                         @endforeach
                         <a href="javascript:;" class="btn btn-primary btn-round" onclick="goBack()">一時停止する</a><br /><br />
 
@@ -38,27 +38,27 @@
                             {{-- <a href="javascript:;" class="btn btn-primary btn-round col-md-3" onclick="myFunction()">BET 履歴</a> --}}
                         </div>
                     </div>
-                
+
                     <h3 style="text-align: center;">Bet History</h3>
                     <div class="col-md-8 pb-3" style="margin: auto;">
                         <table class="table" id="table">
                             <thead class=" text-primary">
-                                <th> 日付   </th>
-                                <th> BET 金額   </th>
-                                <th> 結果   </th>
-                                <th> テーブル   </th>
+                                <th> 取引日時   </th>
+                                <th> 内容   </th>
+                                <th> 取引金額   </th>
+                                <th> キャッシュ   </th>
                             </thead>
                             <tbody>
                                 @foreach ($details as $d  )
                                     <tr>
                                         <td>{{ $d->created_at }} </td>
-                                        <td>{{ $d->aftermath }}</td>
-                                        @if ( $d->result ==1)
-                                            <td> Win </td>
+                                        @if ( $d->delta < 1)
+                                            <td> Wager </td>
                                         @else
-                                            <td> Lost </td>
+                                            <td> Winning </td>
                                         @endif
-                                        <td>{{ $d->table }}</td>
+                                        <td>{{ $d->delta }}</td>
+                                        <td>{{ $d->aftermath }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
