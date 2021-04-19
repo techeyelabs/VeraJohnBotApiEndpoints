@@ -21,11 +21,10 @@ class MailController extends Controller {
     public function downloadLink() {
         $data = array('name'=>"Virat Gandhi");
         Mail::send('downloadLink', $data, function($message) {
-            $message->to('safkatsabiki@gmail.com', 'VeraJohnBot')->subject
+            $message->to('safkatsabik@gmail.com', 'VeraJohnBot')->subject
             ('Laravel HTML Testing Mail');
             $message->from('mathewsmark880@yahoo.com','Virat Gandhi');
         });
-        echo "HTML Email Sent. Check your inbox.";
     }
     public function attachment_email() {
         $data = array('name'=>"Virat Gandhi");
