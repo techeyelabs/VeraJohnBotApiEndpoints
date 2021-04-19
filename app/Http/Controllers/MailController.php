@@ -18,13 +18,25 @@ class MailController extends Controller {
         });
         echo "Basic Email Sent. Check your inbox.";
     }
-    public function downloadLink() {
-        $data = array('name'=>"Virat Gandhi");
-        Mail::send('downloadLink', $data, function($message) {
-            $message->to('safkatsabik@gmail.com', 'VeraJohnBot')->subject
-            ('Laravel HTML Testing Mail');
-            $message->from('mathewsmark880@yahoo.com','Virat Gandhi');
+    public function downloadLink(Request $request) {
+        $sender_name = $request->sender_name;
+        $receiver_name = $request->receiver_name;
+        $usermail = $request->usermail;
+        $downloadlink = $request->downloadlink;
+
+        $data = [
+            'sender_name' => $request->sender_name,
+            'receiver_name' => $request->receiver_name,
+            'usermail' => $request->usermail,
+            'downloadlink' => $request->downloadlink,
+        ];
+
+        Mail::send('downloadLink', $data, function($message) use( $sender_name, $receiver_name, $usermail) {
+            $message->to($usermail, $receiver_name)->subject
+            ('Download Link for CasinoBot');
+            $message->from('brownhick1977@gmail.com', $sender_name);
         });
+        return redirect()->route('user-list');
     }
     public function attachment_email() {
         $data = array('name'=>"Virat Gandhi");

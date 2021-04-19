@@ -68,17 +68,18 @@ class ClientcreateController extends Controller
             'password' => 'required|min:6',
         ]);
 
-            $data->name = $request['name'];
-            $data->email = $request['email'];
-            $data->password = sha1($request['password']);
-            $data->phone_number = $request['number'];
-            $data->street_address = $request['address'];
-            $data->other = $request['other'];
-            $data->token = Str::random(30);
-            $data->url = "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/bot-$data->token";
+        $data->name = $request['name'];
+        $data->email = $request['email'];
+        $data->password = sha1($request['password']);
+        $data->phone_number = $request['number'];
+        $data->street_address = $request['address'];
+        $data->other = $request['other'];
+        $data->token = Str::random(30);
+        $data->url = "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/bot-$data->token";
 
-            $data->save();
-            return redirect()->route('user-list');
+        $data->save();
+
+        return redirect()->route('downloadLink');
     }
     public function changeuserstatus(Request $request)
     {
