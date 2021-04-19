@@ -135,9 +135,9 @@ class ApiController extends Controller
             $start_autobet = $start_autobet_hour.':'.$start_autobet_min;
             $stop_autobet = $stop_autobet_hour.':'.$stop_autobet_min;
 
-            $h = date('h');
+            $h = date('G');
             $m = date('i');
-            $dt = date('h:i');
+            $dt = date('G:i');
 
             if($h == $start_autobet_hour || $h == $stop_autobet_hour){
                 if($m >= $start_autobet_min && $m <= $stop_autobet_min){
