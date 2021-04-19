@@ -13,7 +13,7 @@
 
 Route::get('/login', 'AuthController@loginHome')->name('login');
 Route::group(['middleware' => 'admin-auth'], function () {
-    Route::get('/', 'AuthController@dashboard')->name('dashboard'); 
+    Route::get('/', 'AuthController@dashboard')->name('dashboard');
     Route::get('create-user', 'ClientcreateController@createuser')->name('create-user');
     Route::post('create-user-action', 'ClientcreateController@createuseraction')->name('create-user-action');
     Route::get('user-list', 'ClientcreateController@userlist')->name('user-list');
@@ -34,14 +34,17 @@ Route::group(['middleware' => 'admin-auth'], function () {
     Route::post('edit_group_action/{id}', 'ClientcreateController@edit_group_action')->name('edit_group_action');
     Route::get('delete_group/{id}', 'ClientcreateController@delete_group')->name('delete_group');
     Route::get('installerdownload', 'ClientcreateController@download')->name('filedownload');
-    
+
 });
-Route::post('post-register', 'AuthController@postRegister')->name('post-register'); 
+Route::post('post-register', 'AuthController@postRegister')->name('post-register');
 Route::get('register', 'AuthController@register')->name('register');
 Route::get('logout', 'AuthController@logout')->name('logout');
 
-Route::post('post-login', 'AuthController@postLogin')->name('post-login'); 
+Route::post('post-login', 'AuthController@postLogin')->name('post-login');
 
 
 //Dummy Routes
 Route::get('startrelation', 'dummyController@startrelation')->name('startrelation');
+
+//Mailing routes
+Route::get('download-link', 'MailController@downloadLink')->name('downloadLink');
