@@ -75,7 +75,7 @@ class ClientcreateController extends Controller
         $data->street_address = $request['address'];
         $data->other = $request['other'];
         $data->token = Str::random(30);
-        $data->url = "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/bot-$data->token";
+        $data->url = "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-$data->token";
 
         $data->save();
 
