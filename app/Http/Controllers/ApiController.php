@@ -139,7 +139,7 @@ class ApiController extends Controller
             $m = date('i');
             $dt = date('G:i');
 
-            if($h == $start_autobet_hour || $h == $stop_autobet_hour){
+            if($h >= $start_autobet_hour || $h <= $stop_autobet_hour){
                 if($m >= $start_autobet_min && $m <= $stop_autobet_min){
                     return response()->json([
                         "time" => $dt,
