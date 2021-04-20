@@ -20,6 +20,7 @@
                                 {{ ($c->is_paused == 1)? "一時停止を解除":"一時停止"}}
                             </a><br /><br />
                         @endforeach
+                        <span id="success" class="btn btn-round" style="font-size: 20px; background-color: #4caf50; display: none">メールは正常に送信されました</span><br/>
                         <h4 style="margin-top: 3%">クライアントアプリダウンロード用リンク</h4>
                         @foreach ($client as $c  )
                             <h4><a href="{{ route('filedownload') }}">http://{{$_SERVER['HTTP_HOST']}}/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-{{$c->token}}</a></h4>
@@ -123,7 +124,9 @@
                 'id': id
             },
             success: function(data){
-                console.log(data)
+                console.log(data);
+                $('#mailbutton').prop('disabled', true);
+                $('#success').show();
                 // location.reload();
             },
         });
