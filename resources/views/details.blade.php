@@ -23,7 +23,7 @@
                         <h4 style="margin-top: 3%">クライアントアプリダウンロード用リンク</h4>
                         @foreach ($client as $c  )
                             <h4><a href="{{ route('filedownload') }}">http://{{$_SERVER['HTTP_HOST']}}/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-{{$c->token}}</a></h4>
-                            <a href="javascript:;" class="btn btn-primary btn-round" onclick="sendcredstomail({{$c->id}})">メールに送信 </a>
+                            <button id="mailbutton" class="btn btn-primary btn-round" onclick="sendcredstomail({{$c->id}})">メールに送信 </button>
                         @endforeach
 
                     </div>
@@ -114,6 +114,7 @@
     }
 
     function sendcredstomail(id){
+        $('#mailbutton').disabled(true);
         var ajaxurl = "{{route('send-user-creds')}}";
         $.ajax({
             url: ajaxurl,
@@ -123,7 +124,7 @@
             },
             success: function(data){
                 console.log(data)
-                location.reload();
+                // location.reload();
             },
         });
     }
