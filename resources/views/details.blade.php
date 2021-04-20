@@ -114,7 +114,7 @@
     }
 
     function sendcredstomail(id){
-        $('#mailbutton').disabled(true);
+        $('#mailbutton').prop('disabled', true);
         var ajaxurl = "{{route('send-user-creds')}}";
         $.ajax({
             url: ajaxurl,
