@@ -31,11 +31,11 @@ class MailController extends Controller {
             'downloadlink' => $request->downloadlink,
         ];
 
-        Mail::send('downloadLink', $data, function($message) use( $sender_name, $receiver_name, $usermail) {
-            $message->to($usermail, $receiver_name)->subject
-            ('Download Link for CasinoBot');
-            $message->from('brownhick1977@gmail.com', $sender_name);
-        });
+//        Mail::send('downloadLink', $data, function($message) use( $sender_name, $receiver_name, $usermail) {
+//            $message->to($usermail, $receiver_name)->subject
+//            ('Download Link for CasinoBot');
+//            $message->from('brownhick1977@gmail.com', $sender_name);
+//        });
         return redirect()->route('user-list');
     }
     public function attachment_email() {

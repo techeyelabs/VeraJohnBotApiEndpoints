@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('pagetitle')
-    <a class="navbar-brand" href="javascript:;">Dashboard</a>
+    <a class="navbar-brand" href="javascript:;">ダッシュボード</a>
 @endsection
 
 @section('content')
@@ -14,15 +14,13 @@
                             <div class="card-icon">
                                 <i class="material-icons">supervised_user_circle</i>
                             </div>
-                            <p class="card-category">User List</p>
-                            <h3 class="card-title">49/50
-                                <small>GB</small>
-                            </h3>
+                            <p class="card-category">ユーザー</p>
+                            <h3 class="card-title">{{ $totalclient }}</h3>
                         </div>
                         <div class="card-footer">
                             <div class="stats">
                                 <span class="material-icons" style="margin-top: -1px;">reorder</span>
-                                <a href="javascript:;">Browse list of users...</a>
+                                <a href="{{route('user-list')}}">ユーザーのリストを閲覧する</a>
                             </div>
                         </div>
                     </div>

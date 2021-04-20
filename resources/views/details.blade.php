@@ -16,17 +16,17 @@
                         @foreach ($client as $c  )
                             <h4><b>{{ $c->name }}</b></h4>
                             <h4>{{ $c->email }}</h4>
-
+                            <a href="javascript:;" class="btn btn-primary btn-round" onclick="pause('{{ $c->id }}')">
+                                {{ ($c->is_paused == 1)? "一時停止を解除":"一時停止"}}
+                            </a><br /><br />
                         @endforeach
-                        <a href="javascript:;" class="btn btn-primary btn-round" onclick="goBack()">一時停止する</a><br /><br />
-
                         <h4 style="margin-top: 3%">クライアントアプリダウンロード用リンク</h4>
                         @foreach ($client as $c  )
                             <h4><a href="{{ route('filedownload') }}">http://{{$_SERVER['HTTP_HOST']}}/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-{{$c->token}}</a></h4>
+                            <a href="javascript:;" class="btn btn-primary btn-round" onclick="sendcredstomail({{$c->id}})">メールに送信 </a>
                         @endforeach
-                        <a href="javascript:;" class="btn btn-primary btn-round" onclick="goBack()">メールに送信 </a>
+
                     </div>
-                    <h3 style="margin-top: 3%">ベラジョン残高 2590 USD </h3><br />
 
                     <div class="row" style="margin-top: -20px;margin-bottom: 5%;">
                         <div class="col-md-4">
@@ -95,3 +95,36 @@
         }
     </script> --}}
 @endsection
+
+<script>
+    function pause(id) {
+        var ajaxurl = "{{route('pause-unpause-user')}}";
+        $.ajax({
+            url: ajaxurl,
+            type: "GET",
+            data: {
+                '_token': "{{ csrf_token() }}",
+                'id': id
+            },
+            success: function(data){
+                console.log(data)
+                location.reload();
+            },
+        });
+    }
+
+    function sendcredstomail(id){
+        var ajaxurl = "{{route('send-user-creds')}}";
+        $.ajax({
+            url: ajaxurl,
+            type: "GET",
+            data: {
+                'id': id
+            },
+            success: function(data){
+                console.log(data)
+                location.reload();
+            },
+        });
+    }
+</script>

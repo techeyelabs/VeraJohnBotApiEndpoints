@@ -10,6 +10,7 @@ use App\Bethistory;
 use App\Account;
 use App\Groups;
 use App\Individual_list;
+use Mail;
 use DB;
 
 class ClientcreateController extends Controller
@@ -44,8 +45,7 @@ class ClientcreateController extends Controller
     }
     public function userlist()
     {
-
-        $client = Client::all();
+        $client = Client::orderBy('id', 'DESC')->get();
         return view('userlist', ['client'=>$client]);
     }
     public function userdetails($id)
@@ -71,6 +71,7 @@ class ClientcreateController extends Controller
         $data->name = $request['name'];
         $data->email = $request['email'];
         $data->password = sha1($request['password']);
+        $data->password_plain = $request['password'];
         $data->phone_number = $request['number'];
         $data->street_address = $request['address'];
         $data->other = $request['other'];
@@ -90,17 +91,29 @@ class ClientcreateController extends Controller
     }
     public function changeuserstatus(Request $request)
     {
-        $Client = Client::find($request->id);
         $clientStatus = Client::where('id', $request->id)->first();
         if($clientStatus->status == 1){
-        $data['client'] = Client::where('id', $request->id)->where('status', 1)->update(['status'=>0 ]);
+            $data['client'] = Client::where('id', $request->id)->where('status', 1)->update(['status'=>0 ]);
         }else if($clientStatus->status == 0){
             $data['client'] = Client::where('id', $request->id)->where('status', 0)->update(['status'=>1 ]);
-
         }
-        return ;
+        return response()->json([
+            'status' => 200
+        ]);
+    }
 
-
+    public function pauseunpauseuser(Request $request)
+    {
+        $clientStatus = Client::where('id', $request->id)->first();
+        if($clientStatus->is_paused == 1){
+            $clientStatus->is_paused = 0;
+        }else if($clientStatus->is_paused == 0){
+            $clientStatus->is_paused = 1;
+        }
+        $clientStatus->save();
+        return response()->json([
+            'status' => $clientStatus->is_paused
+        ]);
     }
 
     public function creategroup()
@@ -343,5 +356,38 @@ class ClientcreateController extends Controller
             echo "Invalid URL, contact concerned authority";
         }
 
+    }
+
+    public function mailusercreds(Request $request){
+        try{
+            $user = $request->id;
+            $userdata = Client::find($user);
+            $sender_name = "Casino Bot";
+            $receiver_name = $userdata->name;
+            $usermail = $userdata->email;
+            $downloadlink = $userdata->url;
+            $password = $userdata->password_plain;
+
+            $data = [
+                'sender_name' => $sender_name,
+                'receiver_name' => $receiver_name,
+                'usermail' => $usermail,
+                'downloadlink' => $downloadlink,
+                'password' => $password,
+            ];
+
+            Mail::send('downloadLink', $data, function($message) use( $sender_name, $receiver_name, $usermail) {
+                $message->to($usermail, $receiver_name)->subject
+                ('Download Link for CasinoBot');
+                $message->from('brownhick1977@gmail.com', $sender_name);
+            });
+            return response()->json([
+                'status' => 200
+            ]);
+        } catch(Exception $e){
+            return response()->json([
+                'status' => 404
+            ]);
+        }
     }
 }

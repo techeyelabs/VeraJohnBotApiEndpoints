@@ -7,7 +7,7 @@
         <link rel="icon" type="image/png" href="{{Request::root()}}/assets/img/favicon.png">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>
-            Admin Dashboard by Benri Ltd
+            CasinoBotの管理パネル
         </title>
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
@@ -21,7 +21,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 
 
-        
+
     @yield('custom_css')
     </head>
 
@@ -43,7 +43,7 @@
                             <li class="nav-item ">
                                 <a class="nav-link " href="{{route('dashboard')}}">
                                     <i class="material-icons">dashboard</i>
-                                    <p>Dashboard</p>
+                                    <p>ダッシュボード</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -88,9 +88,9 @@
                                 <span class="navbar-toggler-icon icon-bar"></span>
                                 <span class="navbar-toggler-icon icon-bar"></span>
                             </button>
-                            <div class="collapse navbar-collapse justify-content-end">
+                            <div class="collapse navbar-collapse justify-content-end" style="display: none">
 
-                                <ul class="navbar-nav">
+                                <ul class="navbar-nav" style="display: none">
 
                                     <li class="nav-item dropdown">
                                         <a class="nav-link" href="" id="navbarDropdownMenuLink"
@@ -133,31 +133,15 @@
                     <!-- End Navbar -->
 
                     @yield('content')
-                
+
                     <footer class="footer">
                         <div class="container-fluid">
                             <nav class="float-left">
                                 <ul>
-                                    <li>
-                                        <a href="https://www.benri.com.bd/">
-                                            Benri Ltd
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            About Us
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            Blog
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            Licenses
-                                        </a>
-                                    </li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
                                 </ul>
                             </nav>
                             <div class="copyright float-right">
@@ -166,7 +150,7 @@
                                     document.write(new Date().getFullYear())
 
                                 </script>, made with <i class="material-icons">favorite</i> by
-                                <a href="https://www.benri.com.bd" target="_blank">Benri Ltd</a> for a better admin panel.
+                                <a href="https://www.benri.com.bd" target="_blank">Benri Ltd</a>
                             </div>
                         </div>
                     </footer>
@@ -414,9 +398,9 @@
                         "order": [[ 0, "desc" ]]
                     } );
                 } );
-        
+
         </script>
-        <script> 
+        <script>
         $(function($) {
             url = window.location.href;
             // console.log(url);

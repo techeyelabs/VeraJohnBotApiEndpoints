@@ -18,7 +18,9 @@ Route::group(['middleware' => 'admin-auth'], function () {
     Route::post('create-user-action', 'ClientcreateController@createuseraction')->name('create-user-action');
     Route::get('user-list', 'ClientcreateController@userlist')->name('user-list');
     Route::get('user-details/{id}', 'ClientcreateController@userdetails')->name('user-details');
-    Route::get('change-user-status', 'ClientcreateController@changeuserstatus')->name('change-user-status');
+    Route::get('change-user-status', 'ClientcreateController@changeuserstatus')->name('change-user-status');  // Block or unblock user
+    Route::get('pause-unpause-user', 'ClientcreateController@pauseunpauseuser')->name('pause-unpause-user');  // Pause or unpause user
+    Route::get('mailusercreds', 'ClientcreateController@mailusercreds')->name('send-user-creds');  // Send mail to user with link and credentials
     Route::get('details/{id}', 'ClientcreateController@details')->name('details');
     Route::get('automatebet', 'ClientcreateController@automatebet')->name('automatebet');
     Route::get('bethistory/{id}', 'BetController@userbethistory')->name('bethistory');

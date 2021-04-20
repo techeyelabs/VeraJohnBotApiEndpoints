@@ -10,8 +10,7 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title">Admin Login</h4>
-                            <p class="card-category">Enter tour details below to continue</p>
+                            <h4 class="card-title">管理者ログイン</h4>
                         </div>
                         <div class="card-body">
                             <form action="{{url('post-login')}}" method="POST" id="logForm">
@@ -19,27 +18,26 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">Email</label>
+                                            <label class="bmd-label-floating">Eメール</label>
                                             <input type="email" class="form-control" id="inputEmailAddress" name="email">
                                             @if ($errors->has('email'))
-                                                    <span class="error">{{ $errors->first('email') }}</span>
-                                                    @endif 
+                                                <span class="error">{{ $errors->first('email') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">Password</label>
+                                            <label class="bmd-label-floating">パスワード</label>
                                             <input type="password" class="form-control" id="inputPassword" name="password">
                                             @if ($errors->has('password'))
-                                                    <span class="error">{{ $errors->first('password') }}</span>
-                                                    @endif
+                                                <span class="error">{{ $errors->first('password') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
-                                <p class="mt-2">Don't have an account? <a href="{{route('register')}}">Register here</a></p>
-                                <button type="submit" class="btn btn-primary pull-right">Login</button>
+                                <button type="submit" class="btn btn-primary pull-right">ログイン</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>

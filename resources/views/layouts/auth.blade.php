@@ -7,7 +7,7 @@
         <link rel="icon" type="image/png" href="{{Request::root()}}/assets/img/favicon.png">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>
-            Admin Dashboard by Benri Ltd
+            CasinoBotの管理パネル
         </title>
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
@@ -25,8 +25,8 @@
         <div class="">
             <div class="wrapper ">
                 <div class="main-panel-auth">
-                
-                
+
+
 
                     @yield('authcontent')
 
@@ -34,26 +34,10 @@
                         <div class="container-fluid">
                             <nav class="float-left">
                                 <ul>
-                                    <li>
-                                        <a href="https://www.benri.com.bd/">
-                                            Benri Ltd
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            About Us
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            Blog
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            Licenses
-                                        </a>
-                                    </li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
                                 </ul>
                             </nav>
                             <div class="copyright float-right">
@@ -62,7 +46,7 @@
                                     document.write(new Date().getFullYear())
 
                                 </script>, made with <i class="material-icons">favorite</i> by
-                                <a href="https://www.benri.com.bd" target="_blank">Benri Ltd</a> for a better admin panel.
+                                <a href="https://www.benri.com.bd" target="_blank">Benri Ltd</a>
                             </div>
                         </div>
                     </footer>
