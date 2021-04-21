@@ -14,7 +14,7 @@
             <div class="card-body">
 
                 <h4>自動 BET 設定</h4>
-                <div class="row" style="display: none">
+                <div class="row" style="display: block">
                     <div class="col-md-8" style="margin: auto;">
                         <div class="row">
                             <div class="col-md-6">

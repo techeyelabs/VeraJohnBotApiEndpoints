@@ -17,7 +17,7 @@
                             <h4><b>{{ $c->name }}</b></h4>
                             <h4>{{ $c->email }}</h4>
                             <a href="javascript:;" class="btn btn-primary btn-round" onclick="pause('{{ $c->id }}')">
-                                {{ ($c->is_paused == 1)? "一時停止を解除":"一時停止"}}
+                                {{ ($c->is_paused == 1)? "停止中":"運用中"}}
                             </a><br /><br />
                         @endforeach
                         <span id="success" class="btn btn-round" style="font-size: 20px; background-color: #4caf50; display: none">メールは正常に送信されました</span><br/>

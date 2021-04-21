@@ -37,17 +37,13 @@
                           <td> {{ $c->email }} </td>
                           <td> {{ $c->phone_number }} </td>
                           {{-- <td><button class="btn btn-round btn-primary ">Enable</button></td> --}}
-                          <td> @if($c->status==1)
-                                <button type="submit" class="btn btn-white btn-round btn-just-icon" style="background-color: #b3cfe8;" onclick="doAjax({{$c->id}})" >
+                          <td> @if($c->is_paused==1)
+                                {{--<button type="submit" class="btn btn-white btn-round btn-just-icon" style="background-color: #b3cfe8;" onclick="doAjax({{$c->id}})" >
                                   <i class="material-icons" style="color:black;">lock_open</i>
                                   <div class="ripple-container"></div>
-                                </button>
-                              @elseif($c->status==0)
-                                <button type="submit" class="btn btn-white btn-round btn-just-icon" style="background-color: #b3cfe8;"  onclick="doAjax({{$c->id}})">
-                                  <i class="material-icons" style="color:black;">lock</i>
-                                  <div class="ripple-container"></div>
-                                </button>
-                              @endif
+                                </button>--}}
+                                  停止中
+                                @endif
                           </td>
                         </tr>
                       @endforeach

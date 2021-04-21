@@ -59,7 +59,7 @@ class ApiController extends Controller
 
         $mac = $request->mac;
         $uuid = $request->uuid;
-        $flag = Client::where('name', $name)->where('password', $passwordCheck)->first();
+        $flag = Client::where('name', $name)->where('password', $passwordCheck)->where('is_paused', 0)->first();
 
         if($flag){
             if($flag->uuid == "" || $flag->uuid == null || $flag->mac == "" || $flag->mac == null){
