@@ -26,7 +26,7 @@ class BetController extends Controller
         $aftermath = $request->aftermath;
         $delta = $request->delta;
         $table = $request->table;
-        $flag = Bethistory::where('name', $name)->first();
+        $flag = Client::where('name', $name)->first();
         if($flag){
             $data = new Bethistory();
             $data->user_id = $flag->id;
