@@ -119,9 +119,8 @@ class ClientcreateController extends Controller
     public function creategroup()
     {
         $client = Client::where('group_id', null)->get();
-        $hour = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        // $min = [00, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
-        $min = [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
+        $hour = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
+        $min = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '59'];
 
         return view('creategroup')->with('client', $client)->with('hour', $hour)->with('min', $min);
     }
@@ -149,10 +148,8 @@ class ClientcreateController extends Controller
             $data->winning_double = $request['winningamount'];
             $data->negative_double = $request['negativeamount'];
 
-
             $data->save();
 
-            //$test = [3, 4];
             $test = $request['username'];
 
             if($test>0){
@@ -326,23 +323,15 @@ class ClientcreateController extends Controller
     }
 
 
-    public function delete_group($id)
+    public function delete_group(Request $request)
     {
-        $id = \Crypt::decrypt($id);
+        $id = $request->id;
         $client = Groups::find($id);
-        // $client = Groups::where('id' , $id)->get();
-
         $client->delete();
-
-        return redirect()->route('automatebet');
-
-        // $daysarray = explode(',', $client[0]->days);
-        // $client = Individual_list::all();
-        // return view('nogroup_users')->with('client', $client);
-        // echo '<pre>';
-        // print_r($daysarray);
-        // exit;
-        // return view('edit_group')->with('client', $client)->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('user', $user)->with('name', $name);
+        Client::where('group_id' , $id)->update(array('group_id' => null));
+        return response()->json([
+            'status' => 200
+        ]);
     }
     public function download(Request $request)
     {

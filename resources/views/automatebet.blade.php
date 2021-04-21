@@ -13,8 +13,8 @@
           <div class="card card-profile">
             <div class="card-body">
 
-                <h2>自動 BET 設定</h2>
-                <div class="row">
+                <h4>自動 BET 設定</h4>
+                <div class="row" style="display: none">
                     <div class="col-md-8" style="margin: auto;">
                         <div class="row">
                             <div class="col-md-6">
@@ -27,14 +27,14 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="row pt-5">
                 <div class="col-md-6">
-                    <a style="font-size: 25px;">グループ一覧</a>
+                    <a style="font-size: 20px;">グループ一覧</a>
                 </div>
                 <div class="col-md-6">
-                    <a style="font-size: 25px;" href="{{url('creategroup')}}">新規グループ作成</a>
+                    <a style="font-size: 20px;" href="{{url('creategroup')}}">新規グループ作成</a>
                 </div>
             </div>
             <div class="col-md-8 pt-5 pb-5" style="margin: auto;">
@@ -50,7 +50,7 @@
                             <tr>
                                 <td>{{ $dt->created_at }} </td>
                                 <td style="text-align: left;"><a href="{{url('personal_list')}}/{{\Crypt::encrypt($dt->id)}}">{{ $dt->group_name }}</a></td>
-                                <td><a href="{{url('edit_group')}}/{{\Crypt::encrypt($dt->id)}}">編集</a> / <a href="{{url('delete_group')}}/{{\Crypt::encrypt($dt->id)}}"> 削除</a></td>
+                                <td><a href="{{url('edit_group')}}/{{\Crypt::encrypt($dt->id)}}">編集</a> / <a href="javascript:del('{{$dt->id}}')"> 削除</a></td>
                             </tr>
                         @endforeach
                         {{-- <td>20201117  </td>
@@ -67,3 +67,24 @@
     </div>
   </div>
 @endsection
+
+<script>
+    function del(id){
+        if (confirm("本気ですか？")){
+            var ajaxurl = "{{route('delete_group')}}";
+            $.ajax({
+                url: ajaxurl,
+                type: "GET",
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    'id': id
+                },
+                success: function(data){
+                    console.log(data)
+                    location.reload();
+                },
+            });
+        }
+    }
+</script>
+

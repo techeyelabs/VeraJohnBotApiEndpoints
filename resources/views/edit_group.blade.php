@@ -10,27 +10,24 @@
         <div class="container-fluid">
             <div class="card card-profile">
                 <div class="card-body">
-                    <h3>Edit_Group</h3>
-                    <div class="col-md-4 mt-5" style="text-align: left;padding-left: 14%;">
-                        <label class="bmd-label-floating" style="margin-left: -11px;margin-bottom: 8%;">Group Settings </label>
-                    </div>
+                    <h3>グループの編集</h3>
                     {{-- <form action="" method="POST" id="creategroup"> --}}
                         <form action="{{url('edit_group_action/'.Crypt::encrypt($client[0]->id))}}" method="POST" >
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Group Name </label>
+                                <label class="bmd-label-floating">グループ名 </label>
                             </div>
                             <div class="col-md-8">
                                 @foreach($client as $c)
                                     <input type="text" class="form-control" name="groupname" id="groupname" style="width:75%" value="{{$c->group_name}}">
                                     <p class="errormsg" id="nameerrormsg">Please enter name above</p>
                                 @endforeach
-                                
+
                             </div>
 
                             <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Select User</label>
+                                <label class="bmd-label-floating">ユーザー追加</label>
                             </div>
                             <div class="col-md-8">
 
@@ -45,25 +42,25 @@
                                         {{-- @foreach ($user as $u)
                                             @foreach($name as $n)
                                                 <label>
-                                                    <input type="checkbox" id="one" name="username[]" value="{{ $u->id }}" @if ($u->id == $n->id) checked @endif/>  {{ $u->name }}  
+                                                    <input type="checkbox" id="one" name="username[]" value="{{ $u->id }}" @if ($u->id == $n->id) checked @endif/>  {{ $u->name }}
                                                 </label>
                                             @endforeach
                                         @endforeach --}}
                                         @foreach ($user as $u)
-                                        
+
                                                 <label>
-                                                    <input type="checkbox" id="one" name="username[]" value="{{ $u->id }}" @if (is_array($name) && in_array($u->id, $name)) checked @endif/>  {{ $u->name }}  
+                                                    <input type="checkbox" id="one" name="username[]" value="{{ $u->id }}" @if (is_array($name) && in_array($u->id, $name)) checked @endif/>  {{ $u->name }}
                                                 </label>
-                                        
+
                                         @endforeach
 
                                     </div>
                                   </div>
 
                             </div>
-            
+
                             <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Start Autobet </label>
+                                <label class="bmd-label-floating">自動 BET 開始 </label>
                             </div>
                             <div class="row col-md-8">
                                 <div class="row col-md-6">
@@ -74,14 +71,14 @@
                                             @foreach($client as $c)
                                                 <option value="{{ $c->start_autobet_hour }}">{{ $c->start_autobet_hour }}</option>
                                             @endforeach
-                                            
+
                                             @foreach ($hour as $h)
                                                 <option value="{{ $h }}">{{ $h }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-8">
-                                        <p style="text-align: left;margin-top: 3%;">Hour</p>
+                                        <p style="text-align: left;margin-top: 3%;">時</p>
                                     </div>
                                 </div>
                                 <div class="row col-md-6">
@@ -98,7 +95,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-8">
-                                        <p style="text-align: left;margin-top: 3%;">Min</p>
+                                        <p style="text-align: left;margin-top: 3%;">分</p>
                                     </div>
                                 </div>
                                 {{-- <input type="time" id="appt" min="00:00" max="24:00" name="starttime" style="width: 75%; margin-left: -25%"> --}}
@@ -106,7 +103,7 @@
                             </div>
 
                             <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Stop Autobet </label>
+                                <label class="bmd-label-floating">自動 BET 終了 </label>
                             </div>
                             <div class="row col-md-8">
 
@@ -124,7 +121,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-8">
-                                        <p style="text-align: left;margin-top: 3%;">Hour</p>
+                                        <p style="text-align: left;margin-top: 3%;">時</p>
                                     </div>
                                 </div>
                                 <div class="row col-md-6">
@@ -141,55 +138,55 @@
                                         </select>
                                     </div>
                                     <div class="col-md-8">
-                                        <p style="text-align: left;margin-top: 3%;">Min</p>
+                                        <p style="text-align: left;margin-top: 3%;">分</p>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Select Days </label>
+                                <label class="bmd-label-floating">曜日設定 </label>
                             </div>
                             <div class="col-md-8" style="margin-left: -9%;">
                                 <input type="checkbox" id="streetaddr" name="days[]" value="6" @if (is_array($daysarray) && in_array('6', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Saturday</label>
-                                
+                                <label for="vehicle1"> 土</label>
+
                                 <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="7" @if (is_array($daysarray) && in_array('7', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Sunday</label>
-                                
+                                <label for="vehicle1"> 日</label>
+
                                 <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="1" @if (is_array($daysarray) && in_array('1', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Monday</label>
+                                <label for="vehicle1"> 月</label>
                                 <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="2" @if (is_array($daysarray) && in_array('2', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Tuesday</label>
+                                <label for="vehicle1"> 火</label>
                                 <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="3" @if (is_array($daysarray) && in_array('3', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Wednesday</label>
+                                <label for="vehicle1"> 水</label>
                                 <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="4" @if (is_array($daysarray) && in_array('4', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Thursday</label>
+                                <label for="vehicle1"> 木</label>
                                 <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="5" @if (is_array($daysarray) && in_array('5', $daysarray)) checked @endif>
-                                <label for="vehicle1"> Friday</label>
-                                
+                                <label for="vehicle1"> 金</label>
+
                             </div>
                             <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating" style="margin-top: 42px;">Automatic end amount specification </label>
+                                <label class="bmd-label-floating" style="margin-top: 42px;">自動終了金額指定 </label>
                             </div>
                             <div class="col-md-8 pl-4" >
                                 <div class="row" style="border: 1px solid black;width:75%;background: #C0C0C0;">
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Winning Amount </p>
+                                        <p style="margin-top: 6px;"> 勝金額 </p>
                                     </div>
                                     <div class="col-md-4" style="padding: 5px;">
                                         @foreach($client as $c)
                                             <input type="number" min="0" class="form-control" style="background: white;text-align:center;"name="winningamount" value="{{$c->winning_double}}">
                                         @endforeach
-                                        
+
                                     </div>
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Double </p>
+                                        <p style="margin-top: 6px;"> 倍 </p>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row mt-2" style="border: 1px solid black;width:75%;background: #C0C0C0;">
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Negative Amount </p>
+                                        <p style="margin-top: 6px;"> 負金額 </p>
                                     </div>
                                     <div class="col-md-4" style="padding: 5px;">
                                         @foreach($client as $c)
@@ -197,9 +194,9 @@
                                         @endforeach
                                     </div>
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Double </p>
+                                        <p style="margin-top: 6px;"> 倍 </p>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             <div class="btn mt-5" style="margin: auto;">
@@ -286,7 +283,7 @@ function showCheckboxes() {
 
 .selectBox {
   position: relative;
- 
+
 }
 
 .selectBox select {

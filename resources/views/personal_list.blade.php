@@ -14,7 +14,7 @@
             <div class="card-body">
 
                 <h2>自動 BET 設定</h2>
-                <div class="row">
+                <div class="row" style="display: none">
                     <div class="col-md-8" style="margin: auto;">
                         <div class="row">
                             <div class="col-md-6">
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="row pt-5">
                 <div class="col-md-6">
@@ -42,14 +42,14 @@
                     <thead class=" text-primary">
                         <th> 作成日  </th>
                         <th class="" style="text-align: left";> グループ名   </th>
-                        <th> 自動設定 </th>
+                        {{--<th> 自動設定 </th>--}}
                     </thead>
                     <tbody>
                         @foreach ($client as $dt )
                             <tr>
                                 <td>{{ $dt->created_at }} </td>
                                 <td style="text-align: left;">{{ $dt->name }}/ {{ $dt->email }}</td>
-                                <td>編集 / 削除</td>
+                                {{--<td>編集 / 削除</td>--}}
                             </tr>
                         @endforeach
                         {{-- <td>20201117  </td>

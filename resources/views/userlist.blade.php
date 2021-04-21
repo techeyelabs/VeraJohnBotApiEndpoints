@@ -62,21 +62,19 @@
     </div>
 @endsection
 <script>
-  function doAjax(id) {
-
-    var ajaxurl = "{{route('change-user-status')}}";
-
-    $.ajax({
-        url: ajaxurl,
-        type: "GET",
-        data: {
+    function doAjax(id) {
+        var ajaxurl = "{{route('change-user-status')}}";
+        $.ajax({
+            url: ajaxurl,
+            type: "GET",
+            data: {
                 '_token': "{{ csrf_token() }}",
                 'id': id
-        },
-        success: function(data){
-            console.log(data)
-            location.reload();
-        },
-    });
-  }
+            },
+            success: function(data){
+                console.log(data)
+                location.reload();
+            },
+        });
+    }
 </script>

@@ -17,6 +17,8 @@ use DataTables;
 class BetController extends Controller
 {
     public function bethistory (Request $request) {
+        $uuid = $request->uuId;
+        $mac = $request->mac;
         $name = $request->id;
         $token = $request->token;
         $target = $request->target;
@@ -24,7 +26,7 @@ class BetController extends Controller
         $aftermath = $request->aftermath;
         $delta = $request->delta;
         $table = $request->table;
-        $flag = Bethistory::where('userid', $name)->where('token', $token)->first();
+        $flag = Bethistory::where('name', $name)->first();
         if($flag){
             $data = new Bethistory();
             $data->user_id = $flag->id;
