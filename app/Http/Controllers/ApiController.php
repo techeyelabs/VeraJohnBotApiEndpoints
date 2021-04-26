@@ -144,7 +144,23 @@ class ApiController extends Controller
 
 
             if($h >= $start_autobet_hour && $h <= $stop_autobet_hour){
-                if ($h == $stop_autobet_hour) {
+                if($start_autobet_hour == $stop_autobet_hour){
+                    if ($m <= $stop_autobet_min && $m >= $start_autobet_min){
+                        return response()->json([
+                            "time" => $dt,
+                            "start_autobet" => $start_autobet,
+                            "stop_autobet" => $stop_autobet,
+                            "status" => 200
+                        ]);
+                    } else {
+                        return response()->json([
+                            "time" => $dt,
+                            "start_autobet" => $start_autobet,
+                            "stop_autobet" => $stop_autobet,
+                            "status" => 404
+                        ]);
+                    }
+                } else if ($h == $stop_autobet_hour) {
                     if ($m <= $stop_autobet_min) {
                         return response()->json([
                             "time" => $dt,
