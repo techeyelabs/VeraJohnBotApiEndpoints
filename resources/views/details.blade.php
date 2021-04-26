@@ -23,7 +23,7 @@
                         <span id="success" class="btn btn-round" style="font-size: 20px; background-color: #4caf50; display: none">メールは正常に送信されました</span><br/>
                         <h4 style="margin-top: 3%">クライアントアプリダウンロード用リンク</h4>
                         @foreach ($client as $c  )
-                            <h4><a href="{{ route('filedownload') }}">http://{{$_SERVER['HTTP_HOST']}}/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-{{$c->token}}</a></h4>
+                            <h4><a href="{{ route('filedownload') }}">http://{{$_SERVER['HTTP_HOST']}}/installerdownload?id=bot-{{$c->token}}</a></h4>
                             <button id="mailbutton" class="btn btn-primary btn-round" onclick="sendcredstomail({{$c->id}})">メールに送信 </button>
                         @endforeach
 

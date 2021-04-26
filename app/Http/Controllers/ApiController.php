@@ -139,6 +139,10 @@ class ApiController extends Controller
             $m = date('i');
             $dt = date('G:i');
 
+            //$weeks = $group->days;
+            //$arr = explode(',', $weeks);
+
+
             if($h >= $start_autobet_hour && $h <= $stop_autobet_hour){
                 if ($h == $stop_autobet_hour) {
                     if ($m <= $stop_autobet_min) {

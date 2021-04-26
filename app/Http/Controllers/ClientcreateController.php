@@ -76,7 +76,7 @@ class ClientcreateController extends Controller
         $data->street_address = $request['address'];
         $data->other = $request['other'];
         $data->token = Str::random(30);
-        $data->url = "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-$data->token";
+        $data->url = "http://".$_SERVER['HTTP_HOST']."/installerdownload?id=bot-$data->token";
 
         $data->save();
 
@@ -84,7 +84,7 @@ class ClientcreateController extends Controller
             'sender_name' => 'Casino Bot',
             'receiver_name' => $request['name'],
             'usermail' => $request['email'],
-            'downloadlink' => "http://".$_SERVER['HTTP_HOST']."/VeraJohnBotApiEndpoints/public/installerdownload?id=bot-$data->token",
+            'downloadlink' => "http://".$_SERVER['HTTP_HOST']."/installerdownload?id=bot-$data->token",
         ];
 
         return redirect()->route('downloadLink', $params);
