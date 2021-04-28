@@ -275,7 +275,13 @@ class ApiController extends Controller
             $history->type = $type;
             $history->amount = $amount;
             $history->user_id = $user;
+            $history->happening_date = $date;
             $history->save();
+
+
+            $userdata = Client::where('name', $user)->first();
+            $userdata->last_history_grabbing = $date;
+            $userdata->save();
 
             return response()->json([
                 'status' => 200
