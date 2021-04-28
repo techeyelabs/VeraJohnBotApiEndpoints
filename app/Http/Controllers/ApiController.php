@@ -292,6 +292,15 @@ class ApiController extends Controller
             ]);
         }
     }
+
+    public function getlastdepowithreg(Request $request){
+        $user = $request->user;
+        $userdata = Client::where('name', $user)->first();
+        return response()->json([
+            'status' => 200,
+            'lastdate' => $userdata->last_history_grabbing
+        ]);
+    }
 }
 
 
