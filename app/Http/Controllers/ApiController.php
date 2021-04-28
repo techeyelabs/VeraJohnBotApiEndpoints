@@ -12,6 +12,7 @@ use App\Bethistory;
 use App\Client;
 use App\Account;
 use App\Groups;
+use App\DepositWithdrawHistory;
 use App\Individual_list;
 use Crypt;
 use DB;
@@ -260,6 +261,29 @@ class ApiController extends Controller
                     "status" => 404
                 ]);
             }
+        }
+    }
+
+    public function depowithreg(Request $request){
+        try{
+            $user = $request->userId;
+            $date = $request->date;
+            $amount = $request->amount;
+            $type = $request->type;
+
+            $history = new DepositWithdrawHistory();
+            $history->type = $type;
+            $history->amount = $amount;
+            $history->user_id = $user;
+            $history->save();
+
+            return response()->json([
+                'status' => 200
+            ]);
+        } catch(Exception $e){
+            return response()->json([
+                'status' => 404
+            ]);
         }
     }
 }

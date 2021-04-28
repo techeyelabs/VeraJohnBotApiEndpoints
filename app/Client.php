@@ -22,6 +22,10 @@ class Client extends Model
     {
         return $this->hasMany('App\Bethistory', 'user_id');
     }
+    public function DepositWithdrawhistory()
+    {
+        return $this->hasMany('App\DepositWithdrawHistory', 'user_id');
+    }
     public function account()
     {
         return $this->hasMany('App\Account', 'user_id');
