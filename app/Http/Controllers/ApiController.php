@@ -298,7 +298,7 @@ class ApiController extends Controller
         $userdata = Client::where('name', $user)->first();
         return response()->json([
             'status' => 200,
-            'lastdate' => $userdata->last_history_grabbing
+            'lastdate' => $userdata->updated_at
         ]);
     }
 }
