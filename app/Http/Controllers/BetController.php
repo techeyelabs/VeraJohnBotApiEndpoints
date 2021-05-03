@@ -10,6 +10,7 @@ use App\Betendlog;
 use App\Bethistory;
 use App\Client;
 use App\Account;
+use App\DepositWithdrawHistory;
 use \Crypt;
 use DB;
 use DataTables;
@@ -124,20 +125,15 @@ class BetController extends Controller
     public function withdrawhistory($id){
         $id = Crypt::decrypt($id);
         $client = Client::where('id', $id)->get();
-        $withdraw = Account::where('user_id', $id)->where('transaction_type', '=', 'withdraw')->get();
-        // echo '<pre>';
-        // print_r($client);
-
+        $withdraw = DepositWithdrawHistory::where('user_id', $client[0]->name)->where('type', '!=', 'ご入金')->get();
         return view('withdrawhistory')->with('withdraw', $withdraw)->with('client', $client);
     }
 
     public function deposithistory($id){
         $id = Crypt::decrypt($id);
         $client = Client::where('id', $id)->get();
-        $deposit = Account::where('user_id', $id)->where('transaction_type', '=', 'deposit')->get();
-        // echo '<pre>';
-        // print_r($client);
-
+        //$deposit = Account::where('user_id', $id)->where('transaction_type', '=', 'deposit')->get();
+        $deposit = DepositWithdrawHistory::where('user_id', $client[0]->name)->where('type', 'ご入金')->get();
         return view('deposithistory')->with('deposit', $deposit)->with('client', $client);
     }
 }

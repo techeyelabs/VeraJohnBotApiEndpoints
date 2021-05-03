@@ -31,16 +31,16 @@
 
                     <div class="row" style="margin-top: -20px;margin-bottom: 5%;">
                         <div class="col-md-4">
-                            {{--<a href="{{url('deposithistory/'.Crypt::encrypt($c->id))}}" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;">デポジット 履歴 </a>--}}
+                            <a href="{{url('deposithistory/'.Crypt::encrypt($c->id))}}" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;">デポジット 履歴 </a>
+                        </div>
+
+                        <div class="col-md-4">
+                            <a href="{{url('withdrawhistory/'.Crypt::encrypt($c->id))}}" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;">キャッシュアウト</a>
                         </div>
 
                         <div class="col-md-4">
                             <a href="{{url('bethistory/'.Crypt::encrypt($c->id))}}" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;">BET 履歴</a>
                             {{-- <a href="javascript:;" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;" onclick="myFunction()">BET 履歴</a> --}}
-                        </div>
-
-                        <div class="col-md-4">
-                            {{--<a href="{{url('withdrawhistory/'.Crypt::encrypt($c->id))}}" class="btn btn-primary btn-round col-md-3" style="max-width: 90%;">キャッシュアウト</a>--}}
                         </div>
                     </div>
 

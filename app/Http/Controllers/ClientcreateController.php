@@ -152,16 +152,14 @@ class ClientcreateController extends Controller
 
             $test = $request['username'];
 
-            if($test>0){
+            if($test > 0){
                 foreach ($test as $user) {
-                // client::whereIn('id', $test)
                     client::where('id','=', $user)
                         ->update([
                             'group_id' => $data->id,
                         ]);
-                        }
+                }
         }
-
         return redirect()->route('automatebet');
     }
 
@@ -169,10 +167,10 @@ class ClientcreateController extends Controller
     {
 
         // $client = Client::all();
-        $client = Client::all();
-        $hour = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        $client = Client::where('group_id', null)->where('individual_setting_id', null)->get();
+        $hour = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
         // $min = [00, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
-        $min = [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
+        $min = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '59'];
 
         return view('personal_settings')->with('client', $client)->with('hour', $hour)->with('min', $min);
         // return view('personal_settings')->with('client', $client);
@@ -208,46 +206,48 @@ class ClientcreateController extends Controller
 
     public function personal_settings_action(Request $request)
     {
-        $data = new Individual_list();
-        $client = new Client();
-        request()->validate([
+        $flag = $request->addeditflag;
+        $user = (int)$request->username[0];
+        if ($flag > 0){
+            $data = Individual_list::where('id', $flag)->first();
+        } else {
+            $data = new Individual_list();
+        }
 
+        $client = Client::find($user);
+        request()->validate([
             'days' => 'required_without_all',
             'username' => 'required_without_all',
         ]);
 
-            $arraytostring = implode(',', $request['days']);
-            $namearray = implode(',', $request['username']);
+        $arraytostring = implode(',', $request['days']);
+        $data->user_id = $user;
+        $data->start_autobet_hour = $request['starttime_hour'];
+        $data->start_autobet_min = $request['starttime_min'];
+        $data->stop_autobet_hour = $request['stoptime_hour'];
+        $data->stop_autobet_min = $request['stoptime_min'];
+        $data->days = $arraytostring;
+        $data->winning_double = $request['winningamount'];
+        $data->negative_double = $request['negativeamount'];
+        $data->save();
 
-            // $data->group_name = $request['groupname'];
-            $data->user_id = $namearray;
-            // $data->password = sha1($request['password']);
-            $data->start_autobet_hour = $request['starttime_hour'];
-            $data->start_autobet_min = $request['starttime_min'];
-            $data->stop_autobet_hour = $request['stoptime_hour'];
-            $data->stop_autobet_min = $request['stoptime_min'];
-            $data->days = $arraytostring;
-            $data->winning_double = $request['winningamount'];
-            $data->negative_double = $request['negativeamount'];
+        $client->group_id = null;
+        $client->individual_setting_id = $data->id;
+        $client->save();
 
+        return redirect()->route('nogroup_users');
+    }
 
-            $data->save();
-
-            //$test = [3, 4];
-            // $test = $request['username'];
-
-            // if($test>0){
-            //     foreach ($test as $user) {
-            //     // client::whereIn('id', $test)
-            //         client::where('id','=', $user)
-            //             ->update([
-            //                 'group_id' => $data->id,
-            //             ]);
-            //             }
-
-
-        // return view('nogroup_users');
-        return redirect()->route('personal_settings');
+    public function editIndividualSetting(Request $request)
+    {
+        $ind_id = $request->individual_id;
+        $user = $request->user_id;
+        $userdata = Client::where('id', $user)->get();
+        $hour = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
+        $min = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '59'];
+        $individual = Individual_list::where('id' , $ind_id)->first();
+        $daysarray = explode(',', $individual->days);
+        return view('personal_settings')->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('client', $userdata)->with('individual', $individual);
     }
 
     public function edit_group($id)
@@ -261,11 +261,6 @@ class ClientcreateController extends Controller
         $user = Client::all();
 
         $daysarray = explode(',', $client[0]->days);
-        // $client = Individual_list::all();
-        // return view('nogroup_users')->with('client', $client);
-        // echo '<pre>';
-        // print_r($daysarray);
-        // exit;
         return view('edit_group')->with('client', $client)->with('hour', $hour)->with('min', $min)->with('daysarray', $daysarray)->with('user', $user)->with('name', $name);
     }
 

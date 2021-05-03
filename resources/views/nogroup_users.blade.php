@@ -13,7 +13,7 @@
           <div class="card card-profile">
             <div class="card-body">
 
-                <h2>自動 BET 設定</h2>
+                <h4>自動 BET 設定</h4>
                 <div class="row">
                     <div class="col-md-8" style="margin: auto;">
                         <div class="row">
@@ -27,14 +27,14 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="row pt-5">
                 <div class="col-md-6">
-                    <a style="font-size: 25px;">グループ一覧</a>
+                    <a style="font-size: 20px;">個別設定</a>
                 </div>
                 <div class="col-md-6">
-                    <a style="font-size: 25px;" href="{{url('personal_settings')}}">新規グループ作成</a>
+                    <a style="font-size: 20px;" href="{{url('personal_settings')}}">新しい設定</a>
                 </div>
             </div>
             <div class="col-md-8 pt-5 pb-5" style="margin: auto;">
@@ -60,10 +60,11 @@
                             <tr>
                                 <td>{{ $dt->created_at }} </td>
                                 <td style="text-align: left;">{{ $dt->name }}/ {{ $dt->email }}</td>
-                                <td>編集 / 削除</td>
+                                <td>
+                                    <a href="{{route('edit-individual-setting', ['user_id' => $dt->id, 'individual_id' => $dt->individual_setting_id])}}">編集</a> / <a href="javascript:del('{{$dt->id}}')"> 削除</a>
+                                </td>
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>

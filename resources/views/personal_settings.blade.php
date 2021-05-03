@@ -10,12 +10,13 @@
         <div class="container-fluid">
             <div class="card card-profile">
                 <div class="card-body">
-                    <h3>自動 BET 設定</h3>
-                    <div class="col-md-4 mt-5" style="text-align: left;padding-left: 14%;">
-                        <label class="bmd-label-floating" style="margin-left: -11px;margin-bottom: 8%;">Personal Settings </label>
-                    </div>
-                    {{-- <form action="" method="POST" id="creategroup"> --}}
-                        <form action="{{route('personal_settings_action')}}" method="POST">
+                    <h4>自動 BET 設定 ( 個人 )</h4>
+                    <br/>
+                    @if (count($client) == 0)
+                        <div class="mb-3"><span style="color: red; font-size: 15px; margin-bottom: 15px;">設定出来るユーザーがありません！</span></div>
+                    @endif
+                    <form action="{{route('personal_settings_action')}}" method="POST">
+                        <input name="addeditflag" type="hidden" value="{{ ( isset($individual) ) ?  $individual['id']: 0 }}"/>
                         {{ csrf_field() }}
                         <div class="row">
                             {{-- <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
@@ -27,45 +28,26 @@
                             </div> --}}
 
                             <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Select User</label>
+                                <label class="bmd-label-floating">ユーザー追加</label>
                             </div>
                             <div class="col-md-8">
-                                <select name="username[]" style="width: 74%;margin-left: -27%;padding-left: 10px;">
+                                <select name="username[]" style="width: 74%;margin-left: -27%;padding-left: 10px;" required {{ (count($client) == 0 ? 'disabled': '') }}>
                                     @foreach ($client as $cl)
                                         <option value="{{ $cl->id }}">{{ $cl->name }}</option>
-                                     @endforeach
-                                
+                                    @endforeach
                                 </select>
-
-                                {{-- <div class="multiselect">
-                                    <div class="selectBox" onclick="showCheckboxes()">
-                                      <select>
-                                        <option>Select User</option>
-                                      </select>
-                                      <div class="overSelect"></div>
-                                    </div>
-                                    <div id="checkboxes">
-                                        @foreach ($client as $cl)
-                                        <label>
-                                            <input type="checkbox" id="one" name="username[]" value="{{ $cl->id }}"/>  {{ $cl->name }}  
-                                        </label>
-                                        @endforeach
-                                    </div>
-                                  </div> --}}
-
                             </div>
-            
+
                             <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Start Autobet </label>
+                                <label class="bmd-label-floating">自動 BET 開始</label>
                             </div>
                             <div class="row col-md-8">
                                 <div class="row col-md-6">
                                     <div class="col-md-4">
                                     {{-- <input type="number" min="00" max="24" name="starttime_hour" style="width: 75%; margin-left: -25%" placeholder="Hour"> --}}
-                                        <select class="form-control" id="test" name="starttime_hour" style="width:100%">
-                                            {{-- <option value="">Hour</option> --}}
+                                        <select class="form-control" id="starttime_hour" name="starttime_hour" style="width:100%" onchange="getend('starttime_hour')">
                                             @foreach ($hour as $h)
-                                                <option value="{{ $h }}">{{ $h }}</option>
+                                                <option value="{{ $h }}" {{ ( isset($individual) && $individual['start_autobet_hour'] == $h) ? 'selected' : '' }}>{{ $h }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -76,10 +58,10 @@
                                 <div class="row col-md-6">
                                     {{-- <input type="number" min="00" max="59" name="starttime_min" style="width: 75%; margin-left: -25%" placeholder="Min"> --}}
                                     <div class="col-md-4">
-                                        <select class="form-control" id="test" name="starttime_min" style="width:100%">
+                                        <select class="form-control" id="starttime_min" name="starttime_min" style="width:100%" onchange="getendmin('starttime_min')">
                                             {{-- <option value="">--- Select User ---</option> --}}
                                             @foreach ($min as $m)
-                                                <option value="{{ $m }}">{{ $m }}</option>
+                                                <option value="{{ $m }}" {{ ( isset($individual) && $individual['start_autobet_min'] == $m) ? 'selected' : '' }}>{{ $m }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -92,18 +74,18 @@
                             </div>
 
                             <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Stop Autobet </label>
+                                <label class="bmd-label-floating">自動 BET 終了</label>
                             </div>
                             <div class="row col-md-8">
 
                                 <div class="row col-md-6">
                                     <div class="col-md-4">
-                                    {{-- <input type="number" min="00" max="24" name="stoptime_hour" style="width: 75%; margin-left: -25%" placeholder="Hour"> --}}
-                                        <select class="form-control" id="test" name="stoptime_hour" style="width:100%">
-                                            {{-- <option value="">Hour</option> --}}
-                                            @foreach ($hour as $h)
-                                                <option value="{{ $h }}">{{ $h }}</option>
-                                            @endforeach
+                                        <select class="form-control" id="stoptime_hour" name="stoptime_hour" style="width:100%" {{ (isset($individual) == 0 ? 'disabled': '') }}>
+                                            @if (isset($individual))
+                                                @foreach ($hour as $h)
+                                                    <option value="{{ $h }}" {{ ( isset($individual) && $individual['stop_autobet_hour'] == $h) ? 'selected' : '' }}>{{ $h }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div class="col-md-8">
@@ -113,11 +95,12 @@
                                 <div class="row col-md-6">
                                     {{-- <input type="number" min="00" max="59" name="starttime_min" style="width: 75%; margin-left: -25%" placeholder="Min"> --}}
                                     <div class="col-md-4">
-                                        <select class="form-control" id="test" name="stoptime_min" style="width:100%">
-                                            {{-- <option value="">--- Select User ---</option> --}}
-                                            @foreach ($min as $m)
-                                                <option value="{{ $m }}">{{ $m }}</option>
-                                            @endforeach
+                                        <select class="form-control" id="stoptime_min" name="stoptime_min" style="width:100%" {{ (isset($individual) == 0 ? 'disabled': '') }}>
+                                            @if (isset($individual))
+                                                @foreach ($min as $m)
+                                                    <option value="{{ $m }}" {{ ( isset($individual) && $individual['stop_autobet_min'] == $m) ? 'selected' : '' }}>{{ $m }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div class="col-md-8">
@@ -127,58 +110,59 @@
                             </div>
 
                             <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating">Select Days </label>
+                                <label class="bmd-label-floating">曜日設定</label>
                             </div>
                             <div class="col-md-8" style="margin-left: -9%;">
-                                <input type="checkbox" id="streetaddr" name="days[]" value="6">
-                                <label for="vehicle1"> Saturday</label>
-                                
-                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="7">
-                                <label for="vehicle1"> Sunday</label>
-                                
-                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="1">
-                                <label for="vehicle1"> Monday</label>
-                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="2">
-                                <label for="vehicle1"> Tuesday</label>
-                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="3">
-                                <label for="vehicle1"> Wednesday</label>
-                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="4">
-                                <label for="vehicle1"> Thursday</label>
-                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="5">
-                                <label for="vehicle1"> Friday</label>
-                                
+                                <input type="checkbox" id="streetaddr" name="days[]" value="6" @if (isset($daysarray) && is_array($daysarray) && in_array('6', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 土</label>
+
+                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="7" @if (isset($daysarray) && is_array($daysarray) && in_array('7', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 日</label>
+
+                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="1" @if (isset($daysarray) && is_array($daysarray) && in_array('1', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 月</label>
+                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="2" @if (isset($daysarray) && is_array($daysarray) && in_array('2', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 火</label>
+                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="3" @if (isset($daysarray) && is_array($daysarray) && in_array('3', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 水</label>
+                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="4" @if (isset($daysarray) && is_array($daysarray) && in_array('4', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 木</label>
+                                <input type="checkbox" style="margin-left: 3%;" id="vehicle1" name="days[]" value="5" @if (isset($daysarray) && is_array($daysarray) && in_array('5', $daysarray)) checked @endif>
+                                <label for="vehicle1"> 金</label>
+
                             </div>
-                            <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
-                                <label class="bmd-label-floating" style="margin-top: 42px;">Automatic end amount specification </label>
+                            <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%; display: none">
+                                <label class="bmd-label-floating" style="margin-top: 42px;">自動終了金額指定</label>
                             </div>
-                            <div class="col-md-8 pl-4" >
+                            <div class="col-md-8 pl-4" style="display: none">
                                 <div class="row" style="border: 1px solid black;width:75%;background: #C0C0C0;">
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Winning Amount </p>
+                                        <p style="margin-top: 6px;"> 勝金額 </p>
                                     </div>
                                     <div class="col-md-4" style="padding: 5px;">
-                                        <input type="number" min="0" class="form-control" style="background: white;text-align:center;"name="winningamount">
+                                        <input type="number" min="0" class="form-control" style="background: white;text-align:center;" name="winningamount">
                                     </div>
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Double </p>
+                                        <p style="margin-top: 6px;"> 倍 </p>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row mt-2" style="border: 1px solid black;width:75%;background: #C0C0C0;">
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Negative Amount </p>
+                                        <p style="margin-top: 6px;"> 負金額 </p>
                                     </div>
                                     <div class="col-md-4" style="padding: 5px;">
-                                        <input type="number" min="0" class="form-control" style="background: white;text-align:center;"name="negativeamount">
+                                        <input type="number" min="0" class="form-control" style="background: white;text-align:center;" name="negativeamount">
                                     </div>
                                     <div class="col-md-4">
-                                        <p style="margin-top: 6px;"> Double </p>
+                                        <p style="margin-top: 6px;"> 倍 </p>
                                     </div>
-                                    
                                 </div>
                             </div>
-                            <div class="btn mt-5" style="margin: auto;">
-                                <button class="btn" style="margin: 0; padding: 0;">Submit</button>
+                            <div class="col-md-12">
+                                <div class="" style="margin: auto;">
+                                    <button class="btn" style="margin: 0; padding: 0; width: 150px; height: 35px" {{ (count($client) == 0 ? 'disabled': '') }}>Submit</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -229,20 +213,59 @@ function showCheckboxes() {
 
 <script>
     function validateForm() {
-    var x1 = document.forms["creategroup"]["groupname"].value;
-    //   var x2 = document.forms["creategroup"]["username[]"].value;
-    //   var x3 = document.forms["creategroup"]["starttime"].value;
-    //   var x4 = document.forms["creategroup"]["stoptime"].value;
-    var x5 = document.forms["creategroup"]["days[]"].value;
-    //   var x6 = document.forms["creategroup"]["winningamount"].value;
-    //   var x7 = document.forms["creategroup"]["negativeamount"].value;
+        var x1 = document.forms["creategroup"]["groupname"].value;
+        //   var x2 = document.forms["creategroup"]["username[]"].value;
+        //   var x3 = document.forms["creategroup"]["starttime"].value;
+        //   var x4 = document.forms["creategroup"]["stoptime"].value;
+        var x5 = document.forms["creategroup"]["days[]"].value;
+        //   var x6 = document.forms["creategroup"]["winningamount"].value;
+        //   var x7 = document.forms["creategroup"]["negativeamount"].value;
 
-    if (x1 == "" || x5 == "") {
-        alert("Missing content");
-        return false;
+        if (x1 == "" || x5 == "") {
+            alert("Missing content");
+            return false;
+        }
     }
+
+    function getend(starthour){
+        let starvalhour = $('#'+starthour).val();
+        console.log(starvalhour);
+        var ajaxurl = "{{route('get-end-hour')}}";
+        $.ajax({
+            url: ajaxurl,
+            type: "GET",
+            data: {
+                '_token': "{{ csrf_token() }}",
+                'id': starvalhour
+            },
+            success: function(data){
+                console.log(data);
+                $('#stoptime_hour').prop('disabled', false);
+                $('#stoptime_hour').html(data.res);
+            },
+        });
+    }
+
+    function getendmin(startmin){
+        let starvalmin = $('#'+startmin).val();
+        console.log(starvalmin);
+        var ajaxurl = "{{route('get-end-min')}}";
+        $.ajax({
+            url: ajaxurl,
+            type: "GET",
+            data: {
+                '_token': "{{ csrf_token() }}",
+                'id': starvalmin
+            },
+            success: function(data){
+                console.log(data);
+                $('#stoptime_min').prop('disabled', false);
+                $('#stoptime_min').html(data.res);
+            },
+        });
     }
 </script>
+
 
 
 <style>
@@ -261,7 +284,7 @@ function showCheckboxes() {
 
 .selectBox {
   position: relative;
- 
+
 }
 
 .selectBox select {

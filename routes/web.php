@@ -34,6 +34,10 @@ Route::group(['middleware' => 'admin-auth'], function () {
     Route::post('personal_settings_action', 'ClientcreateController@personal_settings_action')->name('personal_settings_action');
     Route::get('edit_group/{id}', 'ClientcreateController@edit_group')->name('edit_group');
     Route::post('edit_group_action/{id}', 'ClientcreateController@edit_group_action')->name('edit_group_action');
+
+    Route::get('edit-individual-setting', 'ClientcreateController@editIndividualSetting')->name('edit-individual-setting');
+    Route::post('edit-individual-setting-action', 'ClientcreateController@editIndividualSettingAction')->name('edit-individual-setting-action');
+
     Route::get('delete_group', 'ClientcreateController@delete_group')->name('delete_group');
 
     //ajax routes
