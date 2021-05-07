@@ -447,9 +447,10 @@ class ApiController extends Controller
     public function getlastdepowithreg(Request $request){
         $user = $request->user;
         $userdata = Client::where('name', $user)->first();
+        $thedate = $userdata->updated_at;
         return response()->json([
             'status' => 200,
-            'lastdate' => date('Y-m-d', strtotime('+1 day', $userdata->updated_at))
+            'lastdate' => date('Y-m-d', strtotime($thedate->modify('+1 day')))
         ]);
     }
 
