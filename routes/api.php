@@ -43,3 +43,4 @@ Route::get('accountIdPassValidation', 'ApiController@devicevalidation');  // che
 Route::get('deviceReg', 'ApiController@deviceReg');  // Register the device
 Route::get('deposit-withdraw-history', 'ApiController@depowithreg');  // create log for user deposit and withdraw history
 Route::get('get-last-deposit-withdraw-history', 'ApiController@getlastdepowithreg');  // create log for user deposit and withdraw history
+Route::get('lock-user-until-next', 'ApiController@lockUserUntilNext');  // create log for user deposit and withdraw history

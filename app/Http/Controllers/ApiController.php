@@ -17,6 +17,8 @@ use App\Individual_list;
 use Crypt;
 use DB;
 use Carbon;
+use phpDocumentor\Reflection\PseudoTypes\False_;
+use function Composer\Autoload\includeFile;
 
 class ApiController extends Controller
 {
@@ -113,6 +115,29 @@ class ApiController extends Controller
         }
     }
 
+    private function checkweek($group_weeks){
+        $days = $group_weeks;
+        $daysList = explode(',', $days);
+
+        $currentDay = date('D');  // Get current day name
+        $day_of_week = date('N', strtotime($currentDay));  //Get rank of the day
+
+        if (!in_array((string)$day_of_week, $daysList)){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private function resetLock($client_id, $group_id){
+        $client = Client::where('name', $client_id)->first();
+        if ($client->is_locked != (int)$group_id){
+            $client->is_locked = 0;
+            $client->save();
+        }
+        return True;
+    }
+
     public function beteligibility(Request $request) {
         $id = $request->id;
         $flag = Client::where('name', $id)->first();
@@ -122,70 +147,206 @@ class ApiController extends Controller
                 "status" => 404
             ]);
         }
-        if($flag->group_id == NULL || $flag->group_id ==0){
-            $group = Individual_list::where('user_id', $id)->first();
+        if($flag->group_id == NULL || $flag->group_id == ''){
+            $group_all = Individual_list::where('user_id', $id)->first();
         } else {
-            $group = Groups::where('id', $flag->group_id)->first();
+            $group_all = explode(',', $flag->group_id);
         }
 
-        if($group != null){
-            $start_autobet_hour = $group->start_autobet_hour;
-            $start_autobet_min = $group->start_autobet_min;
-            $stop_autobet_hour = $group->stop_autobet_hour;
-            $stop_autobet_min = $group->stop_autobet_min;
-            $start_autobet = $start_autobet_hour.':'.$start_autobet_min;
-            $stop_autobet = $stop_autobet_hour.':'.$stop_autobet_min;
+        $group_count = 0;
+        foreach ($group_all as $grp_count){
+            if ($grp_count != '' && $grp_count != null){
+                $group_count++;
+            }
+        }
 
-            $h = date('G');
-            $m = date('i');
-            $dt = date('G:i');
+        if($group_all != null) {
+            if (count($group_all) > 1) {
+                $i = 0;
+                foreach ($group_all as $grp){
+                    if ($grp == null || $grp == '')
+                        continue;
 
-            //$weeks = $group->days;
-            //$arr = explode(',', $weeks);
+                    $group = Groups::where('id', $grp)->first();
+                    $start_autobet_hour = $group->start_autobet_hour;
+                    $start_autobet_min = $group->start_autobet_min;
+                    $stop_autobet_hour = $group->stop_autobet_hour;
+                    $stop_autobet_min = $group->stop_autobet_min;
+                    $start_autobet = $start_autobet_hour.':'.$start_autobet_min;
+                    $stop_autobet = $stop_autobet_hour.':'.$stop_autobet_min;
 
+                    $h = date('G');
+                    $m = date('i');
+                    $dt = date('G:i');
 
-            if($h >= $start_autobet_hour && $h <= $stop_autobet_hour){
-                if($start_autobet_hour == $stop_autobet_hour){
-                    if ($m <= $stop_autobet_min && $m >= $start_autobet_min){
-                        return response()->json([
-                            "time" => $dt,
-                            "start_autobet" => $start_autobet,
-                            "stop_autobet" => $stop_autobet,
-                            "status" => 200
-                        ]);
+                    $res = $this->checkweek($group->days);
+                    if ($flag->is_locked != (int)$grp && $res == true) {
+                        $status = 200;
                     } else {
+                        $status = 404;
+                    }
+                    echo $start_autobet_hour;
+                    echo '<br/>';
+                    echo $start_autobet_min;
+                    echo '<br/>';
+                    echo $stop_autobet_hour;
+                    echo '<br/>';
+                    echo $stop_autobet_min;
+                    echo '<br/>';
+                    echo $start_autobet;
+                    echo '<br/>';
+                    echo $stop_autobet;
+                    echo '\n';
+
+                    if($h >= $start_autobet_hour && $h <= $stop_autobet_hour){
+                        if($start_autobet_hour == $stop_autobet_hour){
+                            if ($m <= $stop_autobet_min && $m >= $start_autobet_min){
+                                echo "line 185";
+                                $this->resetLock($id, $grp);
+                                return response()->json([
+                                    "time" => $dt,
+                                    "group" => $grp,
+                                    "start_autobet" => $start_autobet,
+                                    "stop_autobet" => $stop_autobet,
+                                    "status" => $status
+                                ]);
+                            }
+                        } else if ($h == $stop_autobet_hour) {
+                            if ($m <= $stop_autobet_min) {
+                                echo "line 197";
+                                $this->resetLock($id, $grp);
+                                return response()->json([
+                                    "time" => $dt,
+                                    "group" => $grp,
+                                    "start_autobet" => $start_autobet,
+                                    "stop_autobet" => $stop_autobet,
+                                    "status" => $status
+                                ]);
+                            }
+                        } else if($h == $start_autobet_hour){
+                            if ($m > $start_autobet_min) {
+                                echo "line 209";
+                                $this->resetLock($id, $grp);
+                                return response()->json([
+                                    "time" => $dt,
+                                    "group" => $grp,
+                                    "start_autobet" => $start_autobet,
+                                    "stop_autobet" => $stop_autobet,
+                                    "status" => $status
+                                ]);
+                            }
+                        } else {
+                            echo "line 220";
+                            echo $status;
+                            $this->resetLock($id, $grp);
+                            return response()->json([
+                                "time" => $dt,
+                                "group" => $grp,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => $status
+                            ]);
+                        }
+                    }
+
+                    if ($i == $group_count - 1){
+                        echo "line 232";
                         return response()->json([
-                            "time" => $dt,
-                            "start_autobet" => $start_autobet,
-                            "stop_autobet" => $stop_autobet,
+                            "time" => "Not applicable",
+                            "group" => "0",
+                            "start_autobet" => "Not applicable",
+                            "stop_autobet" => "Not applicable",
                             "status" => 404
                         ]);
                     }
-                } else if ($h == $stop_autobet_hour) {
-                    if ($m <= $stop_autobet_min) {
-                        return response()->json([
-                            "time" => $dt,
-                            "start_autobet" => $start_autobet,
-                            "stop_autobet" => $stop_autobet,
-                            "status" => 200
-                        ]);
+                    $i++;
+                }
+            } else {
+                $group = Individual_list::where('user_id', $id)->first();
+                $start_autobet_hour = $group->start_autobet_hour;
+                $start_autobet_min = $group->start_autobet_min;
+                $stop_autobet_hour = $group->stop_autobet_hour;
+                $stop_autobet_min = $group->stop_autobet_min;
+                $start_autobet = $start_autobet_hour.':'.$start_autobet_min;
+                $stop_autobet = $stop_autobet_hour.':'.$stop_autobet_min;
+
+                $h = date('G');
+                $m = date('i');
+                $dt = date('G:i');
+
+                $days = $group->days;
+                $daysList = explode(',', $days);
+
+                $currentDay = date('D');  // Get current day name
+                $day_of_week = date('N', strtotime($currentDay));  //Get rank of the day
+
+                if (!in_array((string)$day_of_week, $daysList)){
+                    echo "line 263";
+                    return response()->json([
+                        "time" => $dt,
+                        "start_autobet" => $start_autobet,
+                        "stop_autobet" => $stop_autobet,
+                        "status" => 404
+                    ]);
+                }
+
+                if($h >= $start_autobet_hour && $h <= $stop_autobet_hour){
+                    if($start_autobet_hour == $stop_autobet_hour){
+                        if ($m <= $stop_autobet_min && $m >= $start_autobet_min){
+                            echo "line 275";
+                            return response()->json([
+                                "time" => $dt,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => 200
+                            ]);
+                        } else {
+                            echo "line 283";
+                            return response()->json([
+                                "time" => $dt,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => 404
+                            ]);
+                        }
+                    } else if ($h == $stop_autobet_hour) {
+                        if ($m <= $stop_autobet_min) {
+                            echo "line 293";
+                            return response()->json([
+                                "time" => $dt,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => 200
+                            ]);
+                        } else {
+                            echo "line 301";
+                            return response()->json([
+                                "time" => $dt,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => 404
+                            ]);
+                        }
+                    } else if($h == $start_autobet_hour){
+                        if ($m <= $start_autobet_min) {
+                            echo "line 311";
+                            return response()->json([
+                                "time" => $dt,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => 404
+                            ]);
+                        } else {
+                            echo "line 319";
+                            return response()->json([
+                                "time" => $dt,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "status" => 200
+                            ]);
+                        }
                     } else {
-                        return response()->json([
-                            "time" => $dt,
-                            "start_autobet" => $start_autobet,
-                            "stop_autobet" => $stop_autobet,
-                            "status" => 404
-                        ]);
-                    }
-                } else if($h == $start_autobet_hour){
-                    if ($m <= $start_autobet_min) {
-                        return response()->json([
-                            "time" => $dt,
-                            "start_autobet" => $start_autobet,
-                            "stop_autobet" => $stop_autobet,
-                            "status" => 404
-                        ]);
-                    } else {
+                        echo "line 328";
                         return response()->json([
                             "time" => $dt,
                             "start_autobet" => $start_autobet,
@@ -194,25 +355,15 @@ class ApiController extends Controller
                         ]);
                     }
                 } else {
+                    echo "line 337";
                     return response()->json([
                         "time" => $dt,
                         "start_autobet" => $start_autobet,
                         "stop_autobet" => $stop_autobet,
-                        "status" => 200
+                        "status" => 404
                     ]);
                 }
-            } else {
-                return response()->json([
-                    "time" => $dt,
-                    "start_autobet" => $start_autobet,
-                    "stop_autobet" => $stop_autobet,
-                    "status" => 404
-                ]);
             }
-        } else {
-            return response()->json([
-                "status" => 404
-            ]);
         }
     }
 
@@ -298,7 +449,17 @@ class ApiController extends Controller
         $userdata = Client::where('name', $user)->first();
         return response()->json([
             'status' => 200,
-            'lastdate' => date('Y-m-d', strtotime($userdata->last_history_grabbing))
+            'lastdate' => date('Y-m-d', strtotime('+1 day', $userdata->updated_at))
+        ]);
+    }
+
+    public function lockUserUntilNext(Request $request){
+        $user = $request->userId;
+        $userdata = Client::where('name', $user)->first();
+        $userdata->is_locked = 1;
+        $userdata->save();
+        return response()->json([
+           'status' => 200
         ]);
     }
 }

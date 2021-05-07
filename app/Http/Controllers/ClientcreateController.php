@@ -28,20 +28,8 @@ class ClientcreateController extends Controller
     {
         $id = \Crypt::decrypt($id);
         $client = Client::where('id', $id)->get();
-        // echo '<pre>';
-        // print_r($client);
-        // exit;
         $details = Bethistory::where('user_id', $id)->get();
-        // $account = Account::where('user_id', $id)->get();
-        // $deposit = Account::where('user_id', $id)->where('transaction_type', '=', 'deposit')->get();
-        // $withdraw = Account::where('user_id', $id)->where('transaction_type', '=', 'withdraw')->get();
-        // echo '<pre>';
-        // print_r($deposit);
-        // exit;
-
-        // return view('dummy')->with('details', $details);
-
-            return view('details')->with('client', $client)->with('details', $details);
+        return view('details')->with('client', $client)->with('details', $details);
     }
     public function userlist()
     {
@@ -118,7 +106,7 @@ class ClientcreateController extends Controller
 
     public function creategroup()
     {
-        $client = Client::where('group_id', null)->get();
+        $client = Client::get();
         $hour = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
         $min = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '59'];
 
@@ -134,71 +122,54 @@ class ClientcreateController extends Controller
             'days' => 'required_without_all',
         ]);
 
-            $arraytostring = implode(',', $request['days']);
-            // $namearray = implode(',', $request['username']);
+        $arraytostring = implode(',', $request['days']);
 
-            $data->group_name = $request['groupname'];
-            // $data->users = $namearray;
-            // $data->password = sha1($request['password']);
-            $data->start_autobet_hour = $request['starttime_hour'];
-            $data->start_autobet_min = $request['starttime_min'];
-            $data->stop_autobet_hour = $request['stoptime_hour'];
-            $data->stop_autobet_min = $request['stoptime_min'];
-            $data->days = $arraytostring;
-            $data->winning_double = $request['winningamount'];
-            $data->negative_double = $request['negativeamount'];
+        $data->group_name = $request['groupname'];
 
-            $data->save();
+        $data->start_autobet_hour = $request['starttime_hour'];
+        $data->start_autobet_min = $request['starttime_min'];
+        $data->stop_autobet_hour = $request['stoptime_hour'];
+        $data->stop_autobet_min = $request['stoptime_min'];
+        $data->days = $arraytostring;
+        $data->winning_double = $request['winningamount'];
+        $data->negative_double = $request['negativeamount'];
 
-            $test = $request['username'];
+        $data->save();
 
-            if($test > 0){
-                foreach ($test as $user) {
-                    client::where('id','=', $user)
-                        ->update([
-                            'group_id' => $data->id,
-                        ]);
+        $test = $request['username'];
+        if($test > 0){
+            foreach ($test as $user) {
+                $candidate = client::where('id','=', $user)->first();
+                $prevstr = $candidate->group_id;
+                $prevstr_arr = explode(',', $prevstr);
+                if (!in_array((string)$data->id, $prevstr_arr)){
+                    array_push($prevstr_arr, $data->id);
+                    $newStr = implode(',', $prevstr_arr);
+                    $candidate->group_id = $newStr;
+                    $candidate->save();
                 }
+            }
         }
         return redirect()->route('automatebet');
     }
 
     public function personal_settings()
     {
-
-        // $client = Client::all();
-        $client = Client::where('group_id', null)->where('individual_setting_id', null)->get();
+        $client = Client::get();
         $hour = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
-        // $min = [00, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
         $min = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55', '59'];
-
         return view('personal_settings')->with('client', $client)->with('hour', $hour)->with('min', $min);
-        // return view('personal_settings')->with('client', $client);
     }
 
     public function personal_list($id)
     {
         $id = \Crypt::decrypt($id);
-        $client = Client::where('group_id', $id)->get();
-        // echo '<pre>';
-        // print_r($client);
-        // exit;
-        // $details = Bethistory::where('user_id', $id)->get();
-        // $account = Account::where('user_id', $id)->get();
-        // $deposit = Account::where('user_id', $id)->where('transaction_type', '=', 'deposit')->get();
-        // $withdraw = Account::where('user_id', $id)->where('transaction_type', '=', 'withdraw')->get();
-        // echo '<pre>';
-        // print_r($deposit);
-        // exit;
-
-        // return view('dummy')->with('details', $details);
-
-            return view('personal_list')->with('client', $client);
+        $client = Client::whereRaw("find_in_set('".$id."',group_id)")->get();
+        return view('personal_list')->with('client', $client);
     }
 
     public function nogroup_users()
     {
-
         $client = Client::where('group_id' , NULL)->orWhere('group_id', '=', 0)->get();
         // $client = Individual_list::all();
         return view('nogroup_users')->with('client', $client);
@@ -257,7 +228,7 @@ class ClientcreateController extends Controller
         $min = [00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 59];
 
         $client = Groups::where('id' , $id)->get();
-        $name = Client::where('group_id' , $id)->pluck('id')->toArray();
+        $name = Client::select('id')->whereRaw("find_in_set('".$id."',group_id)")->pluck('id')->toArray();
         $user = Client::all();
 
         $daysarray = explode(',', $client[0]->days);
@@ -267,53 +238,59 @@ class ClientcreateController extends Controller
     public function edit_group_action(Request $request, $id)
     {
         $id = \Crypt::decrypt($id);
-        $data = new Groups();
-        $client = new Client();
         request()->validate([
             'groupname' => 'required | max:255',
             'days' => 'required_without_all',
         ]);
+        $arraytostring = implode(',', $request['days']);
+        $group_name = $request['groupname'];
+        $start_autobet_hour = $request['starttime_hour'];
+        $start_autobet_min = $request['starttime_min'];
+        $stop_autobet_hour = $request['stoptime_hour'];
+        $stop_autobet_min = $request['stoptime_min'];
+        $days = $arraytostring;
+        $winning_double = $request['winningamount'];
+        $negative_double = $request['negativeamount'];
 
-            $arraytostring = implode(',', $request['days']);
-            // $namearray = implode(',', $request['username']);
+        groups::where('id', '=', $id)
+            ->update([
+                'group_name' => $group_name,
+                'start_autobet_hour' => $start_autobet_hour,
+                'start_autobet_min' => $start_autobet_min,
+                'stop_autobet_hour' => $stop_autobet_hour,
+                'stop_autobet_min' => $stop_autobet_min,
+                'days' => '"'.$arraytostring.'"',
+                'winning_double' => $winning_double,
+                'negative_double' => $negative_double,
+            ]);
 
-            $group_name = $request['groupname'];
-            // $data->users = $namearray;
-            // $data->password = sha1($request['password']);
-            $start_autobet_hour = $request['starttime_hour'];
-            $start_autobet_min = $request['starttime_min'];
-            $stop_autobet_hour = $request['stoptime_hour'];
-            $stop_autobet_min = $request['stoptime_min'];
-            $days = $arraytostring;
-            $winning_double = $request['winningamount'];
-            $negative_double = $request['negativeamount'];
-
-            groups::where('id', '=', $id)
-                ->update([
-                    'group_name' => $group_name,
-                    'start_autobet_hour' => $start_autobet_hour,
-                    'start_autobet_min' => $start_autobet_min,
-                    'stop_autobet_hour' => $stop_autobet_hour,
-                    'stop_autobet_min' => $stop_autobet_min,
-                    'days' => '"'.$arraytostring.'"',
-                    'winning_double' => $winning_double,
-                    'negative_double' => $negative_double,
-                ]);
-
-            $test = $request['username'];
-            client::where('group_id','=', $id)
-                ->update([
-                    'group_id' => null,
-                ]);
-            if($test>0){
-                foreach ($test as $user) {
-                    client::where('id','=', $user)
-                        ->update([
-                            'group_id' => $id,
-                        ]);
+        $test = $request['username'];
+        if($test>0){
+            $all = client::select('id')->pluck('id');
+            foreach ($all as $single){
+                $individual = client::find($single);
+                $previndividualstr = $individual->group_id;
+                $previndividualstr_arr = explode(',', $previndividualstr);
+                if (($key = array_search($id, $previndividualstr_arr)) !== false) {
+                    unset($previndividualstr_arr[$key]);
                 }
-        }
+                $newstr = implode(',', $previndividualstr_arr);
+                $individual->group_id = $newstr;
+                $individual->save();
+            }
 
+            foreach ($test as $user) {
+                $candidate = client::where('id','=', $user)->first();
+                $prevstr = $candidate->group_id;
+                $prevstr_arr = explode(',', $prevstr);
+                if (!in_array((string)$id, $prevstr_arr)){
+                    array_push($prevstr_arr, $id);
+                    $newStr = implode(',', $prevstr_arr);
+                    $candidate->group_id = $newStr;
+                    $candidate->save();
+                }
+            }
+        }
         return redirect()->route('automatebet');
     }
 
@@ -321,9 +298,19 @@ class ClientcreateController extends Controller
     public function delete_group(Request $request)
     {
         $id = $request->id;
-        $client = Groups::find($id);
-        $client->delete();
-        Client::where('group_id' , $id)->update(array('group_id' => null));
+        $group = Groups::find($id);
+        $group->delete();
+        $client_list = Client::all();
+        foreach ($client_list as $client){
+            $prevstr = $client->group_id;
+            $prevstr_arr = explode(',', $prevstr);
+            if (($key = array_search($id, $prevstr_arr)) !== false) {
+                unset($prevstr_arr[$key]);
+            }
+            $newstr = implode(',', $prevstr_arr);
+            $client->group_id = $newstr;
+            $client->save();
+        }
         return response()->json([
             'status' => 200
         ]);
