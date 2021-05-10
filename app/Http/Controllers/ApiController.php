@@ -164,14 +164,16 @@ class ApiController extends Controller
             if (count($group_all) > 1) {
                 $i = 0;
                 foreach ($group_all as $grp){
-                    if ($grp == null || $grp == '')
+                    if ($grp == null || $grp == ''){
+                        $i++;
                         continue;
-
+                    }
                     $group = Groups::where('id', $grp)->first();
                     $start_autobet_hour = $group->start_autobet_hour;
                     $start_autobet_min = $group->start_autobet_min;
                     $stop_autobet_hour = $group->stop_autobet_hour;
                     $stop_autobet_min = $group->stop_autobet_min;
+                    $tablecount = $group->terminate_table_count;
                     $start_autobet = $start_autobet_hour.':'.$start_autobet_min;
                     $stop_autobet = $stop_autobet_hour.':'.$stop_autobet_min;
 
@@ -195,6 +197,7 @@ class ApiController extends Controller
                                     "group" => $grp,
                                     "start_autobet" => $start_autobet,
                                     "stop_autobet" => $stop_autobet,
+                                    "table_count" => $tablecount,
                                     "status" => $status
                                 ]);
                             }
@@ -206,6 +209,7 @@ class ApiController extends Controller
                                     "group" => $grp,
                                     "start_autobet" => $start_autobet,
                                     "stop_autobet" => $stop_autobet,
+                                    "table_count" => $tablecount,
                                     "status" => $status
                                 ]);
                             }
@@ -217,6 +221,7 @@ class ApiController extends Controller
                                     "group" => $grp,
                                     "start_autobet" => $start_autobet,
                                     "stop_autobet" => $stop_autobet,
+                                    "table_count" => $tablecount,
                                     "status" => $status
                                 ]);
                             }
@@ -227,17 +232,19 @@ class ApiController extends Controller
                                 "group" => $grp,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => $status
                             ]);
                         }
                     }
-
-                    if ($i == $group_count - 1){
+                    if ($i == count($group_all) - 1){
+                        echo $group_count;
                         return response()->json([
                             "time" => "Not applicable",
                             "group" => "0",
                             "start_autobet" => "Not applicable",
                             "stop_autobet" => "Not applicable",
+                            "table_count" => $tablecount,
                             "status" => 404
                         ]);
                     }
@@ -249,6 +256,7 @@ class ApiController extends Controller
                 $start_autobet_min = $group->start_autobet_min;
                 $stop_autobet_hour = $group->stop_autobet_hour;
                 $stop_autobet_min = $group->stop_autobet_min;
+                $tablecount = $group->terminate_table_count;
                 $start_autobet = $start_autobet_hour.':'.$start_autobet_min;
                 $stop_autobet = $stop_autobet_hour.':'.$stop_autobet_min;
 
@@ -267,6 +275,7 @@ class ApiController extends Controller
                         "time" => $dt,
                         "start_autobet" => $start_autobet,
                         "stop_autobet" => $stop_autobet,
+                        "table_count" => $tablecount,
                         "status" => 404
                     ]);
                 }
@@ -278,6 +287,7 @@ class ApiController extends Controller
                                 "time" => $dt,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => 200
                             ]);
                         } else {
@@ -285,6 +295,7 @@ class ApiController extends Controller
                                 "time" => $dt,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => 404
                             ]);
                         }
@@ -294,6 +305,7 @@ class ApiController extends Controller
                                 "time" => $dt,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => 200
                             ]);
                         } else {
@@ -301,6 +313,7 @@ class ApiController extends Controller
                                 "time" => $dt,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => 404
                             ]);
                         }
@@ -310,6 +323,7 @@ class ApiController extends Controller
                                 "time" => $dt,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => 404
                             ]);
                         } else {
@@ -317,6 +331,7 @@ class ApiController extends Controller
                                 "time" => $dt,
                                 "start_autobet" => $start_autobet,
                                 "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
                                 "status" => 200
                             ]);
                         }
@@ -325,6 +340,7 @@ class ApiController extends Controller
                             "time" => $dt,
                             "start_autobet" => $start_autobet,
                             "stop_autobet" => $stop_autobet,
+                            "table_count" => $tablecount,
                             "status" => 200
                         ]);
                     }
@@ -333,6 +349,7 @@ class ApiController extends Controller
                         "time" => $dt,
                         "start_autobet" => $start_autobet,
                         "stop_autobet" => $stop_autobet,
+                        "table_count" => $tablecount,
                         "status" => 404
                     ]);
                 }

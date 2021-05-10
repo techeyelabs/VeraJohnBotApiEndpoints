@@ -133,7 +133,7 @@ class ClientcreateController extends Controller
         $data->days = $arraytostring;
         $data->winning_double = $request['winningamount'];
         $data->negative_double = $request['negativeamount'];
-
+        $data->terminate_table_count = $request['tablecount'];
         $data->save();
 
         $test = $request['username'];
@@ -251,6 +251,7 @@ class ClientcreateController extends Controller
         $days = $arraytostring;
         $winning_double = $request['winningamount'];
         $negative_double = $request['negativeamount'];
+        $termination_table_count = $request['tablecount'];
 
         groups::where('id', '=', $id)
             ->update([
@@ -262,6 +263,7 @@ class ClientcreateController extends Controller
                 'days' => '"'.$arraytostring.'"',
                 'winning_double' => $winning_double,
                 'negative_double' => $negative_double,
+                'terminate_table_count' => $termination_table_count
             ]);
 
         $test = $request['username'];

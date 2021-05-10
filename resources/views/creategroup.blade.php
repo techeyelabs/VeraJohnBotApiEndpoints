@@ -134,10 +134,10 @@
                                 <label for="vehicle1"> 金</label>
 
                             </div>
-                            <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
+                            <div class="col-md-4" style="padding-bottom: 35px;text-align: left;padding-left: 14%; display: none">
                                 <label class="bmd-label-floating" style="margin-top: 42px;">自動終了金額指定 </label>
                             </div>
-                            <div class="col-md-8 pl-4" >
+                            <div class="col-md-8 pl-4" style="display: none">
                                 <div class="row" style="border: 1px solid black;width:75%;background: #C0C0C0;">
                                     <div class="col-md-4">
                                         <p style="margin-top: 6px;"> 勝金額 </p>
@@ -160,11 +160,20 @@
                                     <div class="col-md-4 text-left">
                                         <p style="margin-top: 6px;"> 倍 </p>
                                     </div>
-
                                 </div>
                             </div>
-                            <div class="btn mt-5" style="margin: auto;">
-                                <button class="btn" style="margin: 0; padding: 0;">保存</button>
+
+                            <div class="col-md-4 pt-2" style="padding-bottom: 35px;text-align: left;padding-left: 14%;">
+                                <label class="bmd-label-floating">Table count</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" name="tablecount" id="tablecount" style="width:75%">
+                                {{--<p class="" id="nameerrormsg" style="float: left; color: red; font-size: 11px; display: none">上に名前を入力してください</p>--}}
+                            </div>
+                            <div class="col-md-12">
+                                <div class="" style="margin: auto;">
+                                    <button class="btn" style="margin: 0; padding: 0; width: 150px; height: 35px">保存</button>
+                                </div>
                             </div>
                         </div>
                     </form>
