@@ -323,7 +323,7 @@ class ClientcreateController extends Controller
         $all = explode('-', $identity);
         $name = Client::where('token' , $all[1])->first();
         if ($name){
-            $pathToFile = storage_path('app/files/main.exe');
+            $pathToFile = storage_path('app/files/installer.exe');
             return response()->download($pathToFile);
         } else {
             echo "Invalid URL, contact concerned authority";
