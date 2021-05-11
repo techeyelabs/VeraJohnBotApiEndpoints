@@ -57,13 +57,15 @@
                         <td class="" style="text-align: left";>Group A  </td>
                         <td>編集 / 削除</td> --}}
                         @foreach ($client as $dt )
-                            <tr>
-                                <td>{{ $dt->created_at }} </td>
-                                <td style="text-align: left;">{{ $dt->name }}/ {{ $dt->email }}</td>
-                                <td>
-                                    <a href="{{route('edit-individual-setting', ['user_id' => $dt->id, 'individual_id' => $dt->individual_setting_id])}}">編集</a> / <a href="javascript:del('{{$dt->id}}')"> 削除</a>
-                                </td>
-                            </tr>
+                            @if ($dt->individual_setting_id > 0)
+                                <tr>
+                                    <td>{{ $dt->created_at }} </td>
+                                    <td style="text-align: left;">{{ $dt->name }}/ {{ $dt->email }}</td>
+                                    <td>
+                                        <a href="{{route('edit-individual-setting', ['user_id' => $dt->id, 'individual_id' => $dt->individual_setting_id])}}">編集</a> / <a href="javascript:del('{{$dt->id}}')"> 削除</a>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
