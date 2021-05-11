@@ -445,8 +445,9 @@ class ApiController extends Controller
 
     public function lockUserUntilNext(Request $request){
         $user = $request->userId;
+        $group = $request->group;
         $userdata = Client::where('name', $user)->first();
-        $userdata->is_locked = 1;
+        $userdata->is_locked = $group;
         $userdata->save();
         return response()->json([
            'status' => 200
