@@ -188,7 +188,6 @@ class ApiController extends Controller
                         $status = 404;
                     }
                     $status = 200;
-
                     if($h >= $start_autobet_hour && $h <= $stop_autobet_hour && $flag->is_locked != (int)$grp && $res == true){
                         if($start_autobet_hour == $stop_autobet_hour){
                             if ($m <= $stop_autobet_min && $m >= $start_autobet_min){
@@ -228,6 +227,14 @@ class ApiController extends Controller
                             }
                         } else {
                             $this->resetLock($id, $grp);
+                            return response()->json([
+                                "time" => $dt,
+                                "group" => $grp,
+                                "start_autobet" => $start_autobet,
+                                "stop_autobet" => $stop_autobet,
+                                "table_count" => $tablecount,
+                                "status" => $status
+                            ]);
                         }
                     }
                     if ($i == count($group_all) - 1){
