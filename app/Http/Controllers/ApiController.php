@@ -147,18 +147,21 @@ class ApiController extends Controller
                 "status" => 404
             ]);
         }
+        $group_count = 0;
         if($flag->group_id == NULL || $flag->group_id == ''){
             $group_all = Individual_list::where('user_id', $id)->first();
+            $group_count = 1;
         } else {
             $group_all = explode(',', $flag->group_id);
-        }
-
-        $group_count = 0;
-        foreach ($group_all as $grp_count){
-            if ($grp_count != '' && $grp_count != null){
-                $group_count++;
+            foreach ($group_all as $grp_count){
+                if ($grp_count != '' && $grp_count != null){
+                    $group_count++;
+                }
             }
         }
+
+
+
 
         if($group_all != null) {
             if (count($group_all) > 1) {
