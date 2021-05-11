@@ -449,7 +449,7 @@ class ApiController extends Controller
         $userdata->is_locked = 1;
         $userdata->save();
         return response()->json([
-           'status' => 200
+           'status' => $userdata->is_locked
         ]);
     }
 }
