@@ -160,9 +160,6 @@ class ApiController extends Controller
             }
         }
 
-
-
-
         if($group_all != null) {
             if (count($group_all) > 1) {
                 $i = 0;
@@ -356,6 +353,14 @@ class ApiController extends Controller
                     ]);
                 }
             }
+        } else {
+            return response()->json([
+                "time" => "You are not grouped",
+                "start_autobet" => "You are not grouped",
+                "stop_autobet" => "You are not grouped",
+                "table_count" => "You are not grouped",
+                "status" => 404
+            ]);
         }
     }
 
