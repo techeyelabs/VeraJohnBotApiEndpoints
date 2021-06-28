@@ -55,9 +55,9 @@
                                     <tr>
                                         <td>{{ $d->created_at }} </td>
                                         @if ( $d->delta < 1)
-                                            <td> Wager </td>
+                                            <td> BET </td>
                                         @else
-                                            <td> Winning </td>
+                                            <td> WIN </td>
                                         @endif
                                         <td>{{ $d->delta }}</td>
                                         <td>{{ $d->aftermath }}</td>

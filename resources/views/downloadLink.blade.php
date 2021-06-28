@@ -1,8 +1,8 @@
-<p>Hi, {{ $receiver_name }}</p>
+<p>{{ $receiver_name }}様</p>
 <br/>
-<p>Following are your credentials for login into the casino bot</p>
-<p>Username: {{ $receiver_name }}</p>
+<p>下記は「ナイン ボット」のログイン情報になります。</p>
+<p>User ID: {{ $receiver_name }}</p>
 <p>Password: {{ $password }}</p>
-<p>Please use this link to download you copy of CasinoBot</p>
+<p>下記のURLから「ナインボット」のPC版（Windows用）をダウンロードして下さい！</p>
 <br/>
 <a>{{ $downloadlink }}</a>
