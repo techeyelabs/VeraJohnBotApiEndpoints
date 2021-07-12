@@ -16,7 +16,7 @@ use App\DepositWithdrawHistory;
 use App\Individual_list;
 use Crypt;
 use DB;
-use Carbon;
+use Carbon\Carbon;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use function Composer\Autoload\includeFile;
 
@@ -141,6 +141,11 @@ class ApiController extends Controller
     public function beteligibility(Request $request) {
         $id = $request->id;
         $flag = Client::where('name', $id)->first();
+        $date = Carbon::parse($flag->updated_at);
+        if(!$date->isToday()){
+            $flag->is_locked = 0;
+            $flag->save();
+        }
         if ($flag->uuid != $request->uuid && $flag->mac != $request->mac){
             return response()->json([
                 "message" => "Device is not verified",
